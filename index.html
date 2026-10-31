@@ -56,6 +56,15 @@ button.mic.recording{background:var(--danger);color:#fff;border-color:var(--dang
 #historyList .actions button{min-width:116px;padding:10px 14px}
 @media(prefers-color-scheme:dark){button{color:#17102b}button.danger,button.mic.recording{color:#17102b}}
 #pvDownload{background:var(--accent);color:var(--on-accent)}
+.toolbar{flex-wrap:nowrap;align-items:stretch}
+.toolbar>button{padding:11px 10px;font-size:.95rem;white-space:nowrap}
+@media(max-width:349px){.toolbar{flex-wrap:wrap}}
+.menu-wrap{position:relative;margin-left:auto}
+.menu-btn{width:46px;padding:11px 0;font-size:1.35rem;line-height:1}
+.menu{position:absolute;right:0;top:calc(100% + 6px);min-width:230px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:6px;box-shadow:0 8px 24px #0005;z-index:20;display:flex;flex-direction:column;gap:2px}
+.menu.hidden{display:none!important}
+.menu button{background:transparent;color:var(--text);width:100%;justify-content:flex-start;border-radius:8px;padding:13px 12px;font-weight:600}
+.menu button:hover,.menu button:active{background:var(--soft)}
 </style>
 </head>
 <body>
@@ -65,8 +74,7 @@ button.mic.recording{background:var(--danger);color:#fff;border-color:var(--dang
 <div class="toolbar no-print">
 <button id="newPartBtn">＋ Parte de hoy</button>
 <button class="secondary" id="historyBtn">▤ Historial</button>
-<button class="secondary" id="exportBtn">⇩ Exportar respaldo</button>
-<button class="secondary" id="importBtn">⇧ Importar respaldo</button>
+<div class="menu-wrap"><button class="secondary menu-btn" id="menuBtn" aria-label="Más opciones" aria-haspopup="true" aria-expanded="false">⋮</button><div class="menu hidden" id="menu" role="menu"><button role="menuitem" id="exportBtn">⇩ Exportar respaldo</button><button role="menuitem" id="importBtn">⇧ Importar respaldo</button></div></div>
 <input class="hidden" type="file" id="importFile" accept=".json,application/json">
 </div>
 <section class="card" id="partCard">
@@ -131,7 +139,7 @@ $('historyBtn').onclick=history;$('closeHistoryBtn').onclick=()=>showMain(true);
 
 /* ===== Dictado por voz ===== */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-let rec=null,recBtn=null,wantListening=false,baseText='',finalText='';
+let rec=null,recBtn=null,wantListening=false,baseText='',finalText='';let emptyRuns=0;const ANDROID=/Android/i.test(navigator.userAgent);
 function micLabel(btn,on){btn.classList.toggle('recording',on);btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'⏹ Detener dictado':'🎤 Dictar'}
 function micStatus(id,msg){const el=$('status-'+id);if(el)el.textContent=msg||''}
 function joinText(base,add){
@@ -150,10 +158,18 @@ function beginSession(btn){
  const id=btn.dataset.target,ta=$(id);
  baseText=ta.value;finalText='';
  const r=new SR();
- r.lang='es-AR';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
+ /* Chrome en Android repite frases en modo continuo: allí se usa una frase por sesión y se reinicia sola */
+ r.lang='es-AR';r.continuous=!ANDROID;r.interimResults=true;r.maxAlternatives=1;
  r.onstart=()=>{if(rec!==r)return;micStatus(id,'Escuchando… hablá con claridad.')};
  r.onresult=e=>{
   if(rec!==r)return;
+  if(ANDROID){
+   /* Se toma solo el último resultado y se REEMPLAZA (nunca se suma), así no se duplica el texto */
+   const last=e.results[e.results.length-1];
+   finalText=last[0].transcript.trim();
+   ta.value=joinText(baseText,finalText);ta.scrollTop=ta.scrollHeight;
+   return;
+  }
   let interim='';
   for(let i=e.resultIndex;i<e.results.length;i++){
    const t=e.results[i][0].transcript;
@@ -173,21 +189,24 @@ function beginSession(btn){
  };
  r.onend=()=>{
   if(rec!==r)return;
-  /* El navegador corta solo tras unos segundos de silencio: si el usuario no detuvo, se reanuda */
   if(wantListening){
    ta.value=joinText(baseText,finalText);
-   try{beginSession(btn)}catch(err){stopDictation()}
+   emptyRuns=finalText?0:emptyRuns+1;
+   if(emptyRuns>=4){notify('Dictado detenido: no se escuchó nada.');stopDictation();return}
+   /* El navegador corta solo tras una frase o un silencio: si el usuario no detuvo, se reanuda */
+   setTimeout(()=>{if(wantListening&&rec===r){try{beginSession(btn)}catch(err){stopDictation()}}},ANDROID?200:0);
   }else{micLabel(btn,false);micStatus(id,'')}
  };
  rec=r;recBtn=btn;
  r.start();
 }
+
 function toggleDictation(btn){
  if(!SR){notify('Tu navegador no admite dictado por voz. Probá con Chrome, Edge o Safari actualizados.');return}
  const same=recBtn===btn&&wantListening;
  stopDictation();
  if(same)return;
- wantListening=true;micLabel(btn,true);micStatus(btn.dataset.target,'Iniciando micrófono…');
+ emptyRuns=0;wantListening=true;micLabel(btn,true);micStatus(btn.dataset.target,'Iniciando micrófono…');
  try{beginSession(btn)}catch(err){notify('No se pudo iniciar el dictado.');stopDictation()}
 }
 document.querySelectorAll('button.mic').forEach(b=>b.addEventListener('click',()=>toggleDictation(b)));
@@ -283,6 +302,12 @@ function pvDownload(){try{download(pvName(),buildPDF(pvDate),'application/pdf');
 $('pdfBtn').onclick=()=>openPreview(currentDate);
 $('pvDownload').onclick=pvDownload;$('pvClose').onclick=closePreview;
 /* ===== Fin vista previa ===== */
+/* Menú de tres puntos (respaldo) */
+function closeMenu(){$('menu').classList.add('hidden');$('menuBtn').setAttribute('aria-expanded','false')}
+$('menuBtn').addEventListener('click',e=>{e.stopPropagation();const open=$('menu').classList.contains('hidden');$('menu').classList.toggle('hidden',!open);$('menuBtn').setAttribute('aria-expanded',open?'true':'false')});
+$('menu').addEventListener('click',()=>setTimeout(closeMenu,0));
+document.addEventListener('click',e=>{if(!$('menu').contains(e.target))closeMenu()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
 
 if(!db[currentDate])part();render();
 })();
