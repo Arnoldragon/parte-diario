@@ -16,49 +16,59 @@
 :root{color-scheme:light dark;--bg:#f4f2fb;--surface:#fff;--text:#231d3a;--muted:#675f85;--primary:#40289C;--border:#dad4ee;--soft:#ebe7f8;--danger:#a32f2f;--accent:#F4B400;--on-accent:#2a1d00}
 @media(prefers-color-scheme:dark){:root{--bg:#14111f;--surface:#1e1a2e;--text:#efecf9;--muted:#b9b2d4;--primary:#b7a6f7;--border:#3a3355;--soft:#2b2543;--danger:#ff9b9b}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-header{background:#40289C;color:#fff;padding:22px 16px}header .inner,main{max-width:820px;margin:auto}h1{font-size:1.45rem;margin:0 0 5px}header p{margin:0;color:#ddd5f8;font-size:.95rem}
-main{padding:18px 14px 42px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-button,.button{font:inherit;border:0;border-radius:11px;padding:11px 14px;background:var(--primary);color:#fff;cursor:pointer;font-weight:650;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}
-button.secondary,.button.secondary{background:var(--soft);color:var(--text);border:1px solid var(--border)}button.danger{background:var(--danger);color:#fff}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #79aef8;outline-offset:2px}
+header{background:#40289C;color:#fff;padding:22px 16px}header .inner,main{max-width:820px;margin:auto}h1{font-size:1.45rem;margin:0 0 5px}
+main{padding:18px 14px 42px}
+button{font:inherit;border:0;border-radius:11px;padding:11px 14px;background:var(--primary);color:#fff;cursor:pointer;font-weight:650;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+button.secondary{background:var(--soft);color:var(--text);border:1px solid var(--border)}button.danger{background:var(--danger);color:#fff}
+button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #79aef8;outline-offset:2px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 3px 12px #00000008}
 .row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.row h2{margin:0;font-size:1.12rem}.muted{color:var(--muted);font-size:.9rem}
-label{display:block;font-weight:650;margin:13px 0 6px}input,textarea,select{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px;width:100%}textarea{min-height:92px;resize:vertical}
-.point{border:1px solid var(--border);border-radius:13px;padding:14px;margin-top:12px}.point h3{margin:0 0 9px;font-size:1rem}.point p{margin:5px 0;white-space:pre-wrap;overflow-wrap:anywhere}.point .label{color:var(--muted);font-size:.82rem;font-weight:700}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{padding:8px 11px;font-size:.9rem}
+#partHeading{font-size:1.5rem;font-weight:800;line-height:1.2;letter-spacing:.01em}
+label{display:block;font-weight:650;margin:14px 0 6px}
+textarea,.turno input{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px}
+textarea{width:100%;resize:none;overflow:hidden}
+#novedades{min-height:120px;font-size:1.05rem;line-height:1.5}
+.turno{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:nowrap}
+.turno b{margin-right:2px}.turno input{width:92px;font-size:1.1rem;text-align:center;padding:10px 6px;font-weight:600;letter-spacing:.02em}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{padding:8px 11px;font-size:.9rem}
 .empty{text-align:center;padding:24px 10px;color:var(--muted)}.hidden{display:none!important}#notice{margin-bottom:12px;color:var(--primary);font-weight:650;min-height:1.2em}
 dialog{max-width:560px;width:calc(100% - 28px);border:1px solid var(--border);border-radius:16px;padding:20px;background:var(--surface);color:var(--text)}dialog::backdrop{background:#0008}dialog h2{margin-top:0}
 footer{text-align:center;color:var(--muted);font-size:.82rem;padding:0 14px 24px}
-@media print{body{background:#fff;color:#111}header{background:#fff;color:#111;padding:0 0 16px}header p{color:#333}main{padding:0;max-width:none}.no-print,#editor,#historyCard,#notice{display:none!important}.card{border:0;box-shadow:none;padding:0}.point{break-inside:avoid;border:1px solid #aaa}.muted,.point .label{color:#333}button{display:none!important}#printTitle{display:block!important}}
-.dictate-bar{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
-button.mic{padding:8px 12px;font-size:.9rem}
+.dictate-bar{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+button.mic{padding:10px 14px;font-size:.95rem}
 button.mic.recording{background:var(--danger);color:#fff;border-color:var(--danger);animation:pulse 1.3s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 #a32f2f66}70%{box-shadow:0 0 0 10px #a32f2f00}100%{box-shadow:0 0 0 0 #a32f2f00}}
 .dictate-status{min-height:1.2em}
 @media(prefers-reduced-motion:reduce){button.mic.recording{animation:none}}
-#previewDlg{max-width:760px;max-height:92vh;overflow:auto;padding:14px}
-.pv-bar{display:flex;gap:8px;flex-wrap:wrap;position:sticky;top:-14px;background:var(--surface);padding:10px 0;z-index:2}
-#pvMsg{min-height:1.3em;margin-bottom:8px}
-.paper{background:#fff;color:#111;border:1px solid #ccc;box-shadow:0 2px 10px #0003;padding:28px 26px;border-radius:4px;font-family:Helvetica,Arial,sans-serif}
-.paper h2{font-size:1.15rem;margin:0 0 4px}.paper .pdate{color:#444;font-size:.9rem;padding-bottom:10px;border-bottom:1px solid #999;margin-bottom:6px}
-.paper .ppoint{padding:12px 0;border-bottom:1px solid #bbb}.paper .ppoint h3{margin:0 0 6px;font-size:1rem}.paper .plabel{color:#666;font-size:.75rem;font-weight:700;margin-top:6px}
-.paper p{margin:3px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.95rem}.paper .pempty{color:#555}
-.numbered{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start}
-.num{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem}
-
-@media print{.num{background:#fff!important;color:#111!important;border:2px solid #111}}
-.pbody{min-width:0}
-.pbody .label:not(:first-child){margin-top:16px}
-.paper .plabel:not(:first-child){margin-top:16px}
-.paper .ppoint{display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;align-items:start}
-.paper .pnum{width:26px;height:26px;border-radius:50%;background:#F4B400;color:#2a1d00;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+/* Vista guardada */
+#viewBody{margin-top:14px}
+.vline{display:flex;gap:12px;margin-top:12px;font-size:1.05rem;line-height:1.5}
+.vline .dot{flex:none;width:1em;text-align:center;color:var(--primary);font-size:.8em;line-height:1.9}
+.vline .t{min-width:0;overflow-wrap:anywhere;white-space:pre-wrap}
+/* Vista previa tipo WhatsApp */
+details.msg{margin-top:16px}details.msg summary{cursor:pointer;color:var(--muted);font-weight:600;padding:6px 0}
+#msgPreview{margin:8px 0 0;padding:10px 12px;background:#d9fdd3;color:#111b21;border-radius:10px 10px 10px 2px;font-family:Roboto,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;font-size:.97rem;line-height:1.4;overflow-wrap:anywhere}
+@media(prefers-color-scheme:dark){#msgPreview{background:#005c4b;color:#e9edef}}
+.wa-title{font-weight:700}.wa-gap{height:.75em}.wa-line{display:flex;gap:.6em}.wa-line .b{flex:none}.wa-line .t{min-width:0;white-space:pre-wrap}
+/* Botones del parte */
+.mainBtns{display:flex;flex-direction:column;gap:16px;margin-top:18px}
+.rowA{display:flex;gap:16px}.rowA button{flex:1 1 0;min-height:50px;font-size:1rem;padding:12px}
+.rowB{display:flex;justify-content:space-between;gap:16px}.rowB button{min-width:128px;min-height:46px;font-size:.98rem;padding:10px 14px}
+#deletePartBtn{color:var(--danger);border-color:var(--danger)}
+/* Historial */
+.point{border:1px solid var(--border);border-radius:13px;padding:14px;margin-top:12px}
 .hrow{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .hrow:hover,.hrow:active{background:var(--soft)}
-.hrow:focus-visible{outline:3px solid #79aef8;outline-offset:2px}
+.hrow .row{flex-wrap:nowrap}
+.hmain{flex:1;min-width:0}
+.hprev{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:.72rem;font-weight:700;vertical-align:middle}
+#historyList .actions{flex-wrap:nowrap;gap:26px;justify-content:flex-end;margin-top:0}
 #historyList .actions button{min-width:0;min-height:46px;padding:10px 16px}
 #historyList .actions .iconbtn{width:46px;padding:0}
-#historyList .actions{flex-wrap:nowrap;gap:16px;justify-content:flex-end;margin-top:0}
+#historyList .actions .del{color:var(--danger);border-color:var(--danger)}
 @media(prefers-color-scheme:dark){button{color:#17102b}button.danger,button.mic.recording{color:#17102b}}
-#pvDownload{background:var(--accent);color:var(--on-accent)}
-.toolbar{flex-wrap:nowrap;align-items:stretch}
+.toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:nowrap;align-items:stretch}
 .toolbar>button{padding:11px 10px;font-size:.95rem;white-space:nowrap}
 @media(max-width:349px){.toolbar{flex-wrap:wrap}}
 .menu-wrap{position:relative;margin-left:auto}
@@ -67,80 +77,274 @@ button.mic.recording{background:var(--danger);color:#fff;border-color:var(--dang
 .menu.hidden{display:none!important}
 .menu button{background:transparent;color:var(--text);width:100%;justify-content:flex-start;border-radius:8px;padding:13px 12px;font-weight:600}
 .menu button:hover,.menu button:active{background:var(--soft)}
-.partActions{flex-direction:column;align-items:flex-start;gap:8px}
-.partActions .topRow{margin-top:0;width:100%}
-.partActions .topRow button{flex:1 1 auto}
 </style>
 </head>
 <body>
 <header><div class="inner"><h1>Parte Diario</h1></div></header>
 <main>
 <div id="notice" role="status" aria-live="polite"></div>
-<div class="toolbar no-print">
+<div class="toolbar">
 <button id="newPartBtn">＋ Parte de hoy</button>
 <button class="secondary" id="historyBtn">▤ Historial</button>
 <div class="menu-wrap"><button class="secondary menu-btn" id="menuBtn" aria-label="Más opciones" aria-haspopup="true" aria-expanded="false">⋮</button><div class="menu hidden" id="menu" role="menu"><button role="menuitem" id="exportBtn">⇩ Exportar respaldo</button><button role="menuitem" id="importBtn">⇧ Importar respaldo</button><button role="menuitem" id="installBtn" class="hidden">⬇ Instalar app</button></div></div>
 <input class="hidden" type="file" id="importFile" accept=".json,application/json">
 </div>
 <section class="card" id="partCard">
-<div class="row"><h2 id="partHeading">Parte diario</h2><span class="muted" id="pointCount">0 actividades</span></div>
-<label for="partDate">Fecha del parte</label><input type="date" id="partDate">
-<div class="actions no-print partActions"><div class="actions topRow"><button id="addPointBtn">＋ Agregar actividad</button><button class="secondary" id="pdfBtn">▤ Guardar PDF</button></div><button class="secondary" id="deletePartBtn">Eliminar parte</button></div>
-<div id="pointsList"></div>
-<div id="noPoints" class="empty">Todavía no hay actividades cargadas.<br>Elegí “Agregar actividad” para comenzar.</div>
+<div class="row"><h2 id="partHeading">PARTE</h2><span class="muted" id="partTag"></span></div>
+<div id="editArea">
+<div class="turno"><b>Turno:</b><input type="text" id="turnoDesde" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Turno: desde (formato 24 horas)"><span>a</span><input type="text" id="turnoHasta" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Turno: hasta (formato 24 horas)"></div>
+<label for="novedades">Novedades</label>
+<textarea id="novedades" rows="3" placeholder="Durante el turno correspondiente los agentes..." autocapitalize="sentences"></textarea>
+<div class="dictate-bar"><button type="button" class="secondary mic" data-target="novedades" aria-pressed="false">🎤 Dictar</button><span class="muted dictate-status" id="status-novedades" aria-live="polite"></span><span class="muted" id="saveStatus" style="margin-left:auto" aria-live="polite"></span></div>
+</div>
+<div id="viewArea" class="hidden"><div id="viewBody"></div></div>
+<details class="msg"><summary>Ver cómo queda para WhatsApp</summary><div id="msgPreview"></div></details>
+<div class="mainBtns">
+<div class="rowA"><button id="saveBtn">Guardar</button><button class="secondary" id="copyBtn">⧉ Copiar texto</button></div>
+<div class="rowB" id="rowB"><button class="secondary hidden" id="cancelBtn">Cancelar</button><button class="secondary hidden" id="editBtn">✎ Editar</button><button class="secondary" id="deletePartBtn">🗑 Eliminar</button></div>
+</div>
 </section>
-<section class="card hidden no-print" id="historyCard"><div class="row"><h2>Historial de partes</h2><button class="secondary" id="closeHistoryBtn">Cerrar</button></div><p class="muted" style="margin:10px 0 0">Tocá un parte para abrirlo.</p><div id="historyList"></div></section>
-<section class="card hidden no-print" id="editor">
-<h2 id="editorHeading">Agregar actividad</h2>
-<label for="activity">Actividad realizada *</label><textarea id="activity" placeholder="Describí la tarea realizada..." required></textarea><div class="dictate-bar"><button type="button" class="secondary mic" data-target="activity" aria-pressed="false">🎤 Dictar</button><span class="muted dictate-status" id="status-activity" aria-live="polite"></span></div>
-<label for="observations">Observaciones (opcional)</label><textarea id="observations" placeholder="Novedades, resultados u otras observaciones..."></textarea><div class="dictate-bar"><button type="button" class="secondary mic" data-target="observations" aria-pressed="false">🎤 Dictar</button><span class="muted dictate-status" id="status-observations" aria-live="polite"></span></div>
-<div class="actions"><button id="savePointBtn">Guardar</button><button class="secondary" id="cancelEditBtn">Cancelar</button></div>
-</section>
-<section class="card hidden" id="printTitle"><h2>PARTE DIARIO</h2><p id="printDate"></p></section>
+<section class="card hidden" id="historyCard"><div class="row"><h2>Historial de partes</h2><button class="secondary" id="closeHistoryBtn">Cerrar</button></div><p class="muted" style="margin:10px 0 0">Tocá un parte para abrirlo.</p><div id="historyList"></div></section>
 </main>
 <dialog id="confirmDlg" aria-labelledby="cfTitle"><h2 id="cfTitle"></h2><p id="cfMsg"></p><div class="actions" style="justify-content:flex-end"><button class="secondary" id="cfCancel">Cancelar</button><button class="danger" id="cfOk">Eliminar</button></div></dialog>
-<dialog id="previewDlg" aria-label="Vista previa del parte"><div class="pv-bar"><button id="pvDownload">⇩ Descargar PDF</button><button class="secondary" id="pvClose">Cerrar</button></div><div class="muted" id="pvMsg" role="status" aria-live="polite"></div><div class="paper" id="pvPaper"></div></dialog>
 <footer>Los datos se guardan en este navegador en el dispositivo. Exportá respaldos periódicamente para conservar una copia.</footer>
 <script>
 (function(){
 'use strict';
 const KEY='parteDiarioActividades_v1';
+const DKEY='parteDiario_borradores';
+const TURNO_KEY='parteDiario_ultimoTurno';
+const UNIT='G.U.M';
+const BULLET='●';
 const $=id=>document.getElementById(id);
-const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-const fmt=date=>{if(!date)return '';const [y,m,d]=date.split('-');return `${d}/${m}/${y}`};
-let db=loadDB(), currentDate=today(), editingId=null;
-function loadDB(){try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');return x&&typeof x==='object'?x:{}}catch(e){return {}}}
-function persist(){try{localStorage.setItem(KEY,JSON.stringify(db));return true}catch(e){notify('No se pudieron guardar los datos en este navegador. Exportá un respaldo y liberá espacio.');return false}}
-function notify(s){$('notice').textContent=s;setTimeout(()=>{if($('notice').textContent===s)$('notice').textContent=''},4500)}
-function part(date=currentDate){if(!db[date])db[date]={date,points:[]};return db[date]}
+const pad=n=>String(n).padStart(2,'0');
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`};
+const fmtDate=date=>{if(!date)return '';const [y,m,d]=date.split('-');return `${d}/${m}/${y}`};
+const DATE_RE=/^\d{4}-\d{2}-\d{2}$/,TIME_RE=/^\d{2}:\d{2}$/;
 function safe(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function render(){
- const p=db[currentDate]||{points:[]};$('partDate').value=currentDate;$('partHeading').textContent='Parte del '+fmt(currentDate);$('pointCount').textContent=`${p.points.length} ${p.points.length===1?'actividad':'actividades'}`;
- $('pointsList').innerHTML='';$('noPoints').classList.toggle('hidden',p.points.length>0);
- p.points.forEach((pt,i)=>{const el=document.createElement('article');el.className='point numbered';el.innerHTML=`<div class="num" aria-label="Actividad ${i+1}">${i+1}</div><div class="pbody"><div class="label">ACTIVIDAD REALIZADA</div><p>${safe(pt.activity)}</p>${pt.observations?`<div class="label">OBSERVACIONES</div><p>${safe(pt.observations)}</p>`:''}<div class="actions no-print"><button class="secondary" data-edit="${safe(pt.id)}">Editar</button><button class="danger" data-delete="${safe(pt.id)}">Eliminar</button></div></div>`;$('pointsList').appendChild(el)});
- $('pointsList').querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editPoint(b.dataset.edit));
- $('pointsList').querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>deletePoint(b.dataset.delete));
- $('printDate').textContent='Fecha: '+fmt(currentDate);
-}
-function newPoint(){stopDictation();editingId=null;$('editorHeading').textContent='Agregar actividad';$('activity').value='';$('observations').value='';$('editor').classList.remove('hidden');$('activity').focus()}
-function editPoint(id){stopDictation();const p=part(),pt=p.points.find(x=>x.id===id);if(!pt)return;editingId=id;$('editorHeading').textContent='Editar actividad';$('activity').value=pt.activity;$('observations').value=pt.observations||'';$('editor').classList.remove('hidden');$('activity').focus()}
-function askConfirm(title,msg,okText){return new Promise(res=>{const d=$('confirmDlg');$('cfTitle').textContent=title;$('cfMsg').textContent=msg;$('cfOk').textContent=okText||'Eliminar';let done=false;const fin=v=>{if(done)return;done=true;if(d.close)d.close();else d.removeAttribute('open');$('cfOk').onclick=null;$('cfCancel').onclick=null;d.oncancel=null;res(v)};$('cfOk').onclick=()=>fin(true);$('cfCancel').onclick=()=>fin(false);d.oncancel=e=>{e.preventDefault();fin(false)};if(d.showModal){if(!d.open)d.showModal()}else d.setAttribute('open','');$('cfCancel').focus()})}
-async function deletePoint(id){if(!await askConfirm('Eliminar actividad','¿Eliminar esta actividad? Esta acción no se puede deshacer.','Sí, eliminar'))return;const p=part();p.points=p.points.filter(x=>x.id!==id);persist();render();notify('Actividad eliminada.')}
-function savePoint(){const activity=$('activity').value.trim(),observations=$('observations').value.trim();if(!activity){notify('Escribí la actividad realizada antes de guardar.');$('activity').focus();return}const p=part();if(editingId){const pt=p.points.find(x=>x.id===editingId);if(pt){pt.activity=activity;pt.observations=observations}}else p.points.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()),activity,observations});persist();$('editor').classList.add('hidden');render();notify('Actividad guardada.')}
-async function deletePart(){const p=db[currentDate],n=p?p.points.length:0;if(!n){notify('Este parte no tiene actividades para eliminar.');return}const ok=await askConfirm('Eliminar parte del '+fmt(currentDate),`Se van a borrar el parte y sus ${n} ${n===1?'actividad':'actividades'}. Esta acción no se puede deshacer.`,'Sí, eliminar parte');if(!ok)return;delete db[currentDate];persist();$('editor').classList.add('hidden');render();notify('Parte eliminado.')}
-function partText(date){const p=db[date];if(!p)return '';let out=`PARTE DIARIO\nFecha: ${fmt(date)}\n\n`;p.points.forEach((pt,i)=>{out+=`${i+1}. Actividad realizada: ${pt.activity}\n`;if(pt.observations)out+=`Observaciones: ${pt.observations}\n`;out+='\n'});return out.trim()}
-function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function exportDB(){download('respaldo-partes-diarios-'+today()+'.json',JSON.stringify({format:'parte-diario-actividades',version:1,exportedAt:new Date().toISOString(),parts:db},null,2),'application/json');notify('Respaldo exportado. Guardalo en un lugar seguro.')}
-function importDB(file){const r=new FileReader();r.onload=async()=>{try{const parsed=JSON.parse(r.result);const incoming=parsed.parts;if(!incoming||typeof incoming!=='object')throw new Error('Formato incorrecto');if(!await askConfirm('Importar respaldo','Se combinarán los partes del archivo con los de este dispositivo. Si una fecha existe en ambos, se reemplazará por la versión importada.','Importar'))return;Object.keys(incoming).forEach(d=>{if(/^\d{4}-\d{2}-\d{2}$/.test(d)&&Array.isArray(incoming[d].points))db[d]=incoming[d]});persist();render();notify('Respaldo importado.')}catch(e){notify('No se pudo importar. Elegí un archivo JSON de respaldo generado por esta aplicación.')}};r.readAsText(file)}
-function showMain(on){$('partCard').classList.toggle('hidden',!on);$('historyCard').classList.toggle('hidden',on);if(!on){$('editor').classList.add('hidden')}window.scrollTo(0,0)}
-function history(){stopDictation();const dates=Object.keys(db).filter(d=>db[d]&&(db[d].points||[]).length>0).sort((a,b)=>b.localeCompare(a));$('historyList').innerHTML='';if(!dates.length){$('historyList').innerHTML='<p class="empty">Todavía no hay partes guardados.</p>'}dates.forEach(d=>{const row=document.createElement('div');row.className='point hrow';row.dataset.open=d;row.innerHTML=`<div class="row"><div><strong>${fmt(d)}</strong><div class="muted">${(db[d].points||[]).length} ${(db[d].points||[]).length===1?'actividad':'actividades'}</div></div><div class="actions"><button class="secondary" data-pdf="${d}">PDF</button><button class="secondary iconbtn" data-share="${d}" aria-label="Compartir parte" title="Compartir"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></button></div></div>`;$('historyList').appendChild(row)});$('historyList').classList.remove('hidden');showMain(false);$('historyList').querySelectorAll('[data-open]').forEach(b=>b.onclick=e=>{e.stopPropagation();currentDate=b.dataset.open;showMain(true);render()});$('historyList').querySelectorAll('[data-pdf]').forEach(b=>b.onclick=e=>{e.stopPropagation();currentDate=b.dataset.pdf;render();openPreview(currentDate)});$('historyList').querySelectorAll('[data-share]').forEach(b=>b.onclick=e=>{e.stopPropagation();shareDate(b.dataset.share)})}
-async function shareDate(date){const text=partText(date);if(!text){notify('No hay contenido para compartir.');return}try{if(navigator.share){await navigator.share({title:'Parte Diario - '+fmt(date),text});}else{await navigator.clipboard.writeText(text);notify('Texto copiado. Pegalo en el mensaje que quieras enviar.')}}catch(e){if(e.name!=='AbortError')try{await navigator.clipboard.writeText(text);notify('Texto copiado al portapapeles.')}catch(_){download('parte-diario-'+date+'.txt',text,'text/plain');notify('Se descargó el texto del parte.')}}}
-$('newPartBtn').onclick=()=>{showMain(true);currentDate=today();part();persist();render();$('editor').classList.add('hidden');notify('Parte de hoy listo para completar.')};
-$('partDate').onchange=e=>{if(!e.target.value)return;currentDate=e.target.value;part();persist();render();$('editor').classList.add('hidden')};
-$('addPointBtn').onclick=newPoint;$('savePointBtn').onclick=savePoint;$('cancelEditBtn').onclick=()=>$('editor').classList.add('hidden');
-$('deletePartBtn').onclick=deletePart;$('exportBtn').onclick=exportDB;$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=e=>{if(e.target.files[0])importDB(e.target.files[0]);e.target.value=''};
-$('historyBtn').onclick=history;$('closeHistoryBtn').onclick=()=>showMain(true);
+function notify(s){$('notice').textContent=s;setTimeout(()=>{if($('notice').textContent===s)$('notice').textContent=''},4500)}
 
+/* ===== Datos (con migración del formato anterior por actividades) ===== */
+function pointsToText(points){return points.map((pt,i)=>{let t=`${i+1}. ${String(pt.activity||'').trim()}`;if(pt.observations&&String(pt.observations).trim())t+=`\n   Observaciones: ${String(pt.observations).trim()}`;return t}).join('\n\n')}
+function validTurno(t){return t&&typeof t==='object'&&TIME_RE.test(t.desde||'')&&TIME_RE.test(t.hasta||'')?{desde:t.desde,hasta:t.hasta}:null}
+function normalizePart(p){
+ if(!p||typeof p!=='object')return null;
+ const text=typeof p.text==='string'?p.text:(Array.isArray(p.points)?pointsToText(p.points):'');
+ if(!text.trim())return null;
+ const out={text};const t=validTurno(p.turno);if(t)out.turno=t;return out;
+}
+function loadDB(){
+ let raw=null;try{raw=localStorage.getItem(KEY)}catch(e){}
+ let x={};try{x=JSON.parse(raw||'{}')}catch(e){x={}}
+ if(!x||typeof x!=='object')x={};
+ const out={};let changed=false;
+ Object.keys(x).forEach(d=>{
+  if(!DATE_RE.test(d))return;
+  const n=normalizePart(x[d]);
+  if(n){out[d]=Object.assign({date:d},n);if(typeof x[d].text!=='string')changed=true}else changed=true;
+ });
+ if(changed&&raw){
+  try{if(!localStorage.getItem(KEY+'_respaldo_formato_anterior'))localStorage.setItem(KEY+'_respaldo_formato_anterior',raw)}catch(e){}
+  try{localStorage.setItem(KEY,JSON.stringify(out))}catch(e){}
+ }
+ return out;
+}
+function loadDrafts(){
+ try{
+  const x=JSON.parse(localStorage.getItem(DKEY)||'{}'),out={};
+  Object.keys(x||{}).forEach(d=>{const v=x[d];if(DATE_RE.test(d)&&v&&typeof v.text==='string'&&v.text.trim())out[d]={text:v.text,desde:String(v.desde||''),hasta:String(v.hasta||'')}});
+  return out;
+ }catch(e){return {}}
+}
+function loadTurno(){try{return validTurno(JSON.parse(localStorage.getItem(TURNO_KEY)))||{desde:'12:00',hasta:'18:00'}}catch(e){return {desde:'12:00',hasta:'18:00'}}}
+let db=loadDB(),drafts=loadDrafts(),lastTurno=loadTurno(),currentDate=today(),lastToday=currentDate,savedSig='',mode='edit';
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(db));return true}catch(e){notify('No se pudieron guardar los datos en este navegador. Exportá un respaldo y liberá espacio.');return false}}
+function persistDrafts(){try{localStorage.setItem(DKEY,JSON.stringify(drafts))}catch(e){}}
+function saveLastTurno(){try{localStorage.setItem(TURNO_KEY,JSON.stringify(lastTurno))}catch(e){}}
+
+/* ===== Mensaje para WhatsApp ===== */
+function lineItems(p){
+ const items=[];
+ if(TIME_RE.test(p.desde||'')&&TIME_RE.test(p.hasta||''))items.push(`Turno: ${p.desde} a ${p.hasta}.`);
+ String(p.text||'').split('\n').map(s=>s.trim()).filter(Boolean).forEach(l=>items.push(l));
+ return items;
+}
+/* Título en negrita de WhatsApp (*...*), línea en blanco y luego una viñeta grande por línea */
+function buildMessage(p){
+ const title=`*PARTE ${fmtDate(p.date)} ${UNIT}*`,items=lineItems(p);
+ return items.length?title+'\n\n'+items.map(l=>`${BULLET} ${l}`).join('\n'):title;
+}
+function previewHTML(p){
+ let h=`<div class="wa-title">PARTE ${fmtDate(p.date)} ${UNIT}</div>`;
+ const items=lineItems(p);
+ if(items.length)h+='<div class="wa-gap"></div>'+items.map(l=>`<div class="wa-line"><span class="b">${BULLET}</span><span class="t">${safe(l)}</span></div>`).join('');
+ return h;
+}
+const live=()=>({date:currentDate,desde:$('turnoDesde').value,hasta:$('turnoHasta').value,text:$('novedades').value});
+const fromSaved=(d,p)=>({date:d,desde:p.turno&&p.turno.desde,hasta:p.turno&&p.turno.hasta,text:p.text});
+function effective(d){
+ const dr=drafts[d],p=db[d];
+ if(dr&&dr.text.trim())return {date:d,desde:dr.desde,hasta:dr.hasta,text:dr.text};
+ return p?fromSaved(d,p):null;
+}
+const current=()=>mode==='edit'?live():(db[currentDate]?fromSaved(currentDate,db[currentDate]):live());
+
+/* ===== Edición, borrador automático y guardado ===== */
+function setSaveStatus(s){$('saveStatus').textContent=s}
+const sig=()=>$('novedades').value+'|'+$('turnoDesde').value+'|'+$('turnoHasta').value;
+function autoGrow(){const ta=$('novedades');if($('editArea').classList.contains('hidden'))return;ta.style.height='auto';ta.style.height=Math.max(ta.scrollHeight+2,120)+'px'}
+function updatePreview(){$('msgPreview').innerHTML=previewHTML(current())}
+/* El borrador se guarda solo mientras escribís, para no perder nada. "Guardar" lo confirma. */
+function saveDraft(){
+ if(mode!=='edit'||sig()===savedSig)return true;
+ const v=live(),p=db[currentDate];
+ const same=p&&v.text===p.text&&v.desde===(p.turno&&p.turno.desde)&&v.hasta===(p.turno&&p.turno.hasta);
+ if(same||!v.text.trim()){delete drafts[currentDate];setSaveStatus('')}
+ else{drafts[currentDate]={text:v.text,desde:v.desde,hasta:v.hasta};setSaveStatus('Borrador ✓')}
+ persistDrafts();savedSig=sig();return true;
+}
+function loadInputs(p){
+ $('turnoDesde').value=(p&&p.desde)||lastTurno.desde;$('turnoHasta').value=(p&&p.hasta)||lastTurno.hasta;
+ $('turnoDesde').dataset.ok=$('turnoDesde').value;$('turnoHasta').dataset.ok=$('turnoHasta').value;
+ $('novedades').value=(p&&p.text)||'';
+}
+function applyMode(){
+ const edit=mode==='edit',has=!!db[currentDate];
+ $('editArea').classList.toggle('hidden',!edit);$('viewArea').classList.toggle('hidden',edit);
+ $('saveBtn').classList.toggle('hidden',!edit);
+ $('cancelBtn').classList.toggle('hidden',!(edit&&has));
+ $('editBtn').classList.toggle('hidden',edit);
+ $('deletePartBtn').classList.toggle('hidden',!has);
+ $('rowB').classList.toggle('hidden',!has);
+ if(edit)autoGrow();
+ else{
+  const p=fromSaved(currentDate,db[currentDate]||{text:''});
+  $('viewBody').innerHTML=lineItems(p).map(l=>`<div class="vline"><span class="dot">${BULLET}</span><span class="t">${safe(l)}</span></div>`).join('');
+ }
+ updatePreview();
+}
+function render(){
+ const p=effective(currentDate);
+ mode=(drafts[currentDate]||!db[currentDate])?'edit':'view';
+ $('partHeading').textContent=`PARTE ${fmtDate(currentDate)} ${UNIT}`;
+ $('partTag').textContent=currentDate===today()?'Hoy':'Parte anterior';
+ loadInputs(mode==='edit'?p:null);
+ if(mode==='view')loadInputs(fromSaved(currentDate,db[currentDate]));
+ savedSig=sig();setSaveStatus(drafts[currentDate]?'Borrador ✓':'');
+ applyMode();
+}
+function startEdit(){
+ stopDictation();
+ mode='edit';const p=db[currentDate];
+ loadInputs(p?fromSaved(currentDate,p):null);savedSig=sig();setSaveStatus('');
+ applyMode();$('novedades').focus();
+}
+function cancelEdit(){stopDictation();delete drafts[currentDate];persistDrafts();render();notify('Cambios descartados.')}
+function commit(){
+ stopDictation();
+ const v=live();
+ if(!v.text.trim()){notify('Escribí las novedades antes de guardar.');$('novedades').focus();return}
+ const t=validTurno({desde:v.desde,hasta:v.hasta});
+ if(!t){notify('Completá el turno: hora de inicio y de fin.');return}
+ db[currentDate]={date:currentDate,text:v.text,turno:t};
+ lastTurno=t;saveLastTurno();
+ delete drafts[currentDate];persistDrafts();
+ if(persist()){render();notify('Parte guardado.')}
+}
+let saveTimer=null;
+$('novedades').addEventListener('input',()=>{setSaveStatus('Escribiendo…');autoGrow();updatePreview();clearTimeout(saveTimer);saveTimer=setTimeout(saveDraft,500)});
+function fixHora(v){
+ const d=String(v||'').replace(/\D/g,'').slice(0,4);
+ if(!d)return '';
+ let h,m;
+ if(d.length<=2){h=d;m='00'}else if(d.length===3){h='0'+d[0];m=d.slice(1)}else{h=d.slice(0,2);m=d.slice(2)}
+ h=h.padStart(2,'0');
+ return (+h<24&&+m<60)?`${h}:${m}`:null;
+}
+['turnoDesde','turnoHasta'].forEach(id=>{
+ const el=$(id);
+ el.addEventListener('input',()=>{const d=el.value.replace(/\D/g,'').slice(0,4);el.value=d.length>2?d.slice(0,2)+':'+d.slice(2):d;updatePreview()});
+ el.addEventListener('focus',()=>{try{el.select()}catch(e){}});
+ el.addEventListener('change',()=>{
+  const f=fixHora(el.value);
+  if(f===null){el.value=el.dataset.ok||'';notify('Hora no válida. Usá formato de 24 horas, por ejemplo 18:00.')}
+  else{el.value=f;el.dataset.ok=f}
+  updatePreview();saveDraft();
+ });
+});
+setInterval(()=>{if(mode==='edit'){saveDraft();autoGrow();updatePreview()}},1500);
+window.addEventListener('pagehide',saveDraft);
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){stopDictation();saveDraft();return}
+ const t=today();
+ if(t!==lastToday){if(currentDate===lastToday){saveDraft();currentDate=t;render()}lastToday=t}
+});
+function goTo(date){stopDictation();saveDraft();currentDate=date;showMain(true);render()}
+
+function askConfirm(title,msg,okText){return new Promise(res=>{const d=$('confirmDlg');$('cfTitle').textContent=title;$('cfMsg').textContent=msg;$('cfOk').textContent=okText||'Eliminar';let done=false;const fin=v=>{if(done)return;done=true;if(d.close)d.close();else d.removeAttribute('open');$('cfOk').onclick=null;$('cfCancel').onclick=null;d.oncancel=null;res(v)};$('cfOk').onclick=()=>fin(true);$('cfCancel').onclick=()=>fin(false);d.oncancel=e=>{e.preventDefault();fin(false)};if(d.showModal){if(!d.open)d.showModal()}else d.setAttribute('open','');$('cfCancel').focus()})}
+async function removePart(d){
+ const ok=await askConfirm('Eliminar parte del '+fmtDate(d),'Se va a borrar este parte y todo su texto. Esta acción no se puede deshacer.','Sí, eliminar parte');
+ if(!ok)return false;
+ delete db[d];delete drafts[d];persist();persistDrafts();return true;
+}
+async function deleteCurrent(){
+ stopDictation();
+ if(!db[currentDate]){notify('Este parte todavía no está guardado.');return}
+ if(await removePart(currentDate)){render();notify('Parte eliminado.')}
+}
+async function copyText(t){
+ try{await navigator.clipboard.writeText(t);return true}catch(e){}
+ try{const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(e){return false}
+}
+async function copyCurrent(){
+ stopDictation();saveDraft();
+ const v=current();
+ if(!String(v.text||'').trim()){notify('Escribí las novedades antes de copiar.');return}
+ if(await copyText(buildMessage(v)))notify('Texto copiado. Pegalo en WhatsApp.');else notify('No se pudo copiar. Abrí "Ver cómo queda para WhatsApp" y copialo a mano.');
+}
+function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function exportDB(){saveDraft();download('respaldo-partes-diarios-'+today()+'.json',JSON.stringify({format:'parte-diario',version:2,exportedAt:new Date().toISOString(),parts:db},null,2),'application/json');notify('Respaldo exportado. Guardalo en un lugar seguro.')}
+function importDB(file){
+ const r=new FileReader();
+ r.onload=async()=>{
+  try{
+   const parsed=JSON.parse(r.result);const incoming=parsed.parts;
+   if(!incoming||typeof incoming!=='object')throw new Error('Formato incorrecto');
+   if(!await askConfirm('Importar respaldo','Se combinarán los partes del archivo con los de este dispositivo. Si una fecha existe en ambos, se reemplazará por la versión importada.','Importar'))return;
+   stopDictation();saveDraft();
+   let n=0;
+   Object.keys(incoming).forEach(d=>{if(!DATE_RE.test(d))return;const p=normalizePart(incoming[d]);if(p){db[d]=Object.assign({date:d},p);delete drafts[d];n++}});
+   persist();persistDrafts();render();notify(`Respaldo importado (${n} ${n===1?'parte':'partes'}).`);
+  }catch(e){notify('No se pudo importar. Elegí un archivo JSON de respaldo generado por esta aplicación.')}
+ };
+ r.readAsText(file);
+}
+
+/* ===== Historial ===== */
+function showMain(on){$('partCard').classList.toggle('hidden',!on);$('historyCard').classList.toggle('hidden',on);window.scrollTo(0,0)}
+const TRASH='<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
+function historyDates(){
+ return [...new Set([...Object.keys(db),...Object.keys(drafts)])].filter(d=>{const e=effective(d);return e&&String(e.text||'').trim()}).sort((a,b)=>b.localeCompare(a));
+}
+function renderHistoryList(){
+ const dates=historyDates(),list=$('historyList');
+ list.innerHTML='';
+ if(!dates.length)list.innerHTML='<p class="empty">Todavía no hay partes guardados.</p>';
+ dates.forEach(d=>{
+  const e=effective(d),prev=(String(e.text).split('\n').find(l=>l.trim())||'').trim().slice(0,90);
+  const row=document.createElement('div');row.className='point hrow';row.dataset.open=d;
+  row.innerHTML=`<div class="row"><div class="hmain"><strong>${fmtDate(d)}</strong>${drafts[d]?'<span class="badge">Borrador</span>':''}<div class="muted hprev">${safe(prev)}</div></div><div class="actions"><button class="secondary" data-copy="${d}">Copiar</button><button class="secondary iconbtn del" data-del="${d}" aria-label="Eliminar parte" title="Eliminar">${TRASH}</button></div></div>`;
+  list.appendChild(row);
+ });
+ list.querySelectorAll('[data-open]').forEach(b=>b.onclick=e=>{e.stopPropagation();goTo(b.dataset.open)});
+ list.querySelectorAll('[data-copy]').forEach(b=>b.onclick=async e=>{e.stopPropagation();const ok=await copyText(buildMessage(effective(b.dataset.copy)));notify(ok?'Texto copiado. Pegalo en WhatsApp.':'No se pudo copiar.')});
+ list.querySelectorAll('[data-del]').forEach(b=>b.onclick=async e=>{e.stopPropagation();const d=b.dataset.del;if(await removePart(d)){renderHistoryList();notify('Parte eliminado.')}});
+}
+function history(){stopDictation();saveDraft();renderHistoryList();showMain(false)}
+$('newPartBtn').onclick=()=>{goTo(today());lastToday=today();if(mode==='edit')$('novedades').focus()};
+$('saveBtn').onclick=commit;$('editBtn').onclick=startEdit;$('cancelBtn').onclick=cancelEdit;$('deletePartBtn').onclick=deleteCurrent;$('copyBtn').onclick=copyCurrent;
+$('exportBtn').onclick=exportDB;$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=e=>{if(e.target.files[0])importDB(e.target.files[0]);e.target.value=''};
+$('historyBtn').onclick=history;$('closeHistoryBtn').onclick=()=>showMain(true);
 
 /* ===== Dictado por voz ===== */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -205,108 +409,17 @@ function beginSession(btn){
  rec=r;recBtn=btn;
  r.start();
 }
-
 function toggleDictation(btn){
  if(!SR){notify('Tu navegador no admite dictado por voz. Probá con Chrome, Edge o Safari actualizados.');return}
  const same=recBtn===btn&&wantListening;
- stopDictation();
+ stopDictation();saveDraft();
  if(same)return;
  emptyRuns=0;wantListening=true;micLabel(btn,true);micStatus(btn.dataset.target,'Iniciando micrófono…');
  try{beginSession(btn)}catch(err){notify('No se pudo iniciar el dictado.');stopDictation()}
 }
 document.querySelectorAll('button.mic').forEach(b=>b.addEventListener('click',()=>toggleDictation(b)));
 if(!SR)document.querySelectorAll('.dictate-status').forEach(el=>el.textContent='Dictado no disponible en este navegador.');
-$('savePointBtn').addEventListener('click',stopDictation);
-$('cancelEditBtn').addEventListener('click',stopDictation);
-document.addEventListener('visibilitychange',()=>{if(document.hidden)stopDictation()});
 /* ===== Fin dictado ===== */
-/* ===== Vista previa y PDF ===== */
-const WIN={'€':128,'…':133,'‘':145,'’':146,'“':147,'”':148,'•':149,'–':150,'—':151};
-const clean=t=>Array.from(String(t||'').replace(/\r/g,'').replace(/\t/g,' ')).map(ch=>{const c=ch.codePointAt(0);return (WIN[ch]||(c>=32&&c<=126)||(c>=160&&c<=255)||ch==='\n')?ch:'?'}).join('');
-function enc(t){let o='';for(const ch of t){let c=ch.codePointAt(0);if(WIN[ch])c=WIN[ch];if(c==40||c==41||c==92)o+='\\'+String.fromCharCode(c);else if(c<32||c>126)o+='\\'+c.toString(8).padStart(3,'0');else o+=String.fromCharCode(c)}return o}
-const mctx=document.createElement('canvas').getContext('2d');
-function tw(t,size,bold){mctx.font=(bold?'bold ':'')+size+'px Arial, Helvetica, sans-serif';return mctx.measureText(t).width*1.03}
-function wrap(text,size,bold,maxW){
- const out=[];
- text.split('\n').forEach(par=>{
-  if(!par.trim()){out.push('');return}
-  let line='';
-  par.split(/ +/).forEach(word=>{
-   if(!word)return;
-   const test=line?line+' '+word:word;
-   if(tw(test,size,bold)<=maxW){line=test;return}
-   if(line){out.push(line);line=''}
-   while(tw(word,size,bold)>maxW){let k=word.length;while(k>1&&tw(word.slice(0,k),size,bold)>maxW)k--;out.push(word.slice(0,k));word=word.slice(k)}
-   line=word;
-  });
-  out.push(line);
- });
- return out;
-}
-function buildPDF(date){
- const p=db[date]||{points:[]},PW=595,PH=842,M=54,CW=PW-2*M;
- const pages=[[]];let y=PH-M;
- const op=s=>pages[pages.length-1].push(s);
- const newPage=()=>{pages.push([]);y=PH-M};
- const ensure=h=>{if(y-h<M+14)newPage()};
- const text=(t,x,size,bold,g)=>op(`${g} g BT /F${bold?2:1} ${size} Tf ${x} ${y.toFixed(2)} Td (${enc(t)}) Tj ET`);
- const badge=n=>{const r=9,cx=M+r,cy=y+3,k=r*0.5523,f=v=>v.toFixed(2);op(`0.957 0.706 0 rg ${f(cx-r)} ${f(cy)} m ${f(cx-r)} ${f(cy+k)} ${f(cx-k)} ${f(cy+r)} ${f(cx)} ${f(cy+r)} c ${f(cx+k)} ${f(cy+r)} ${f(cx+r)} ${f(cy+k)} ${f(cx+r)} ${f(cy)} c ${f(cx+r)} ${f(cy-k)} ${f(cx+k)} ${f(cy-r)} ${f(cx)} ${f(cy-r)} c ${f(cx-k)} ${f(cy-r)} ${f(cx-r)} ${f(cy-k)} ${f(cx-r)} ${f(cy)} c f`);const t=String(n),sw=tw(t,10,true)/1.03;op(`0.165 0.114 0 rg BT /F2 10 Tf ${f(cx-sw/2)} ${f(cy-3.5)} Td (${enc(t)}) Tj ET`)};
- const rule=g=>op(`${g} G 0.8 w ${M} ${y.toFixed(2)} m ${PW-M} ${y.toFixed(2)} l S`);
- y-=16;text('PARTE DIARIO',M,16,true,0.1);
- y-=20;text('Fecha: '+fmt(date),M,11,false,0.25);
- y-=12;rule(0.6);y-=6;
- if(!p.points.length){y-=18;text('Sin actividades cargadas.',M,11,false,0.3)}
- p.points.forEach((pt,i)=>{
-  const X0=M+30,CW2=CW-30;
-  const act=wrap(clean(pt.activity),11,false,CW2);
-  const obs=pt.observations?wrap(clean(pt.observations),11,false,CW2):null;
-  const total=18+act.length*15+(obs?16+obs.length*15:0)+16;
-  if(total<PH-2*M&&y-total<M+14)newPage();
-  ensure(18+15+15);
-  y-=18;badge(i+1);text('ACTIVIDAD REALIZADA',X0,8.5,true,0.4);
-  act.forEach(l=>{ensure(15);y-=15;if(l)text(l,X0,11,false,0.1)});
-  if(obs){ensure(16+15);y-=16;text('OBSERVACIONES',X0,8.5,true,0.4);obs.forEach(l=>{ensure(15);y-=15;if(l)text(l,X0,11,false,0.1)})}
-  y-=10;ensure(6);rule(0.8);y-=4;
- });
- const n=pages.length;
- pages.forEach((ops,i)=>{
-  ops.push(`0.5 g BT /F1 8.5 Tf ${M} 30 Td (${enc('Parte diario - '+fmt(date))}) Tj ET`);
-  ops.push(`0.5 g BT /F1 8.5 Tf ${PW-M-62} 30 Td (${enc('Página '+(i+1)+' de '+n)}) Tj ET`);
- });
- const objs=[];
- objs[1]='<< /Type /Catalog /Pages 2 0 R >>';
- objs[2]='<< /Type /Pages /Kids ['+pages.map((_,i)=>(5+2*i)+' 0 R').join(' ')+'] /Count '+n+' >>';
- objs[3]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>';
- objs[4]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>';
- pages.forEach((ops,i)=>{
-  const content=ops.join('\n');
-  objs[5+2*i]=`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PH}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${6+2*i} 0 R >>`;
-  objs[6+2*i]=`<< /Length ${content.length} >>\nstream\n${content}\nendstream`;
- });
- let out='%PDF-1.4\n';const offs=[];
- for(let i=1;i<objs.length;i++){offs[i]=out.length;out+=`${i} 0 obj\n${objs[i]}\nendobj\n`}
- const xref=out.length;
- out+=`xref\n0 ${objs.length}\n0000000000 65535 f \n`;
- for(let i=1;i<objs.length;i++)out+=String(offs[i]).padStart(10,'0')+' 00000 n \n';
- out+=`trailer\n<< /Size ${objs.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
- return new Blob([out],{type:'application/pdf'});
-}
-let pvDate=null;
-function openPreview(date){
- pvDate=date;const p=db[date]||{points:[]};
- let h=`<h2>PARTE DIARIO</h2><div class="pdate">Fecha: ${fmt(date)}</div>`;
- if(!p.points.length)h+='<p class="pempty">Sin actividades cargadas.</p>';
- p.points.forEach((pt,i)=>{h+=`<div class="ppoint"><div class="pnum">${i+1}</div><div class="pbody"><div class="plabel">ACTIVIDAD REALIZADA</div><p>${safe(pt.activity)}</p>${pt.observations?`<div class="plabel">OBSERVACIONES</div><p>${safe(pt.observations)}</p>`:''}</div></div>`});
- $('pvPaper').innerHTML=h;$('pvMsg').textContent='';
- const d=$('previewDlg');if(d.showModal){if(!d.open)d.showModal()}else d.setAttribute('open','');
- d.scrollTop=0;
-}
-function closePreview(){const d=$('previewDlg');if(d.close)d.close();else d.removeAttribute('open')}
-const pvName=()=>'parte-diario-'+pvDate+'.pdf';
-function pvDownload(){try{download(pvName(),buildPDF(pvDate),'application/pdf');$('pvMsg').textContent='PDF generado. Buscalo en tus descargas.'}catch(e){$('pvMsg').textContent='No se pudo generar el PDF.'}}
-$('pdfBtn').onclick=()=>openPreview(currentDate);
-$('pvDownload').onclick=pvDownload;$('pvClose').onclick=closePreview;
-/* ===== Fin vista previa ===== */
 /* Menú de tres puntos (respaldo) */
 function closeMenu(){$('menu').classList.add('hidden');$('menuBtn').setAttribute('aria-expanded','false')}
 $('menuBtn').addEventListener('click',e=>{e.stopPropagation();const open=$('menu').classList.contains('hidden');$('menu').classList.toggle('hidden',!open);$('menuBtn').setAttribute('aria-expanded',open?'true':'false')});
@@ -319,7 +432,7 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredIns
 window.addEventListener('appinstalled',()=>{deferredInstall=null;$('installBtn').classList.add('hidden');notify('App instalada.')});
 $('installBtn').addEventListener('click',async()=>{if(!deferredInstall)return;const ev=deferredInstall;deferredInstall=null;$('installBtn').classList.add('hidden');try{ev.prompt();await ev.userChoice}catch(err){}});
 
-if(!db[currentDate])part();render();
+render();
 })();
 </script>
 <script>
