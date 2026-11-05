@@ -23,12 +23,13 @@ button.secondary{background:var(--soft);color:var(--text);border:1px solid var(-
 button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #79aef8;outline-offset:2px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 3px 12px #00000008}
 .row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.row h2{margin:0;font-size:1.12rem}.muted{color:var(--muted);font-size:.9rem}
-#partHeading{font-size:1.5rem;font-weight:800;line-height:1.2;letter-spacing:.01em}
-label{display:block;font-weight:650;margin:14px 0 6px}
+#partHeading{font-size:1.5rem;font-weight:800;line-height:1.2;letter-spacing:.01em;margin:0}
+.tag{display:block;font-size:.74rem;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
+label{display:block;font-weight:650;margin:12px 0 6px}
 textarea,.turno input{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px}
 textarea{width:100%;resize:none;overflow:hidden}
 #novedades{min-height:120px;font-size:1.05rem;line-height:1.5}
-.turno{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:nowrap}
+.turno{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:nowrap}
 .turno b{margin-right:2px}.turno input{width:92px;font-size:1.1rem;text-align:center;padding:10px 6px;font-weight:600;letter-spacing:.02em}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{padding:8px 11px;font-size:.9rem}
 .empty{text-align:center;padding:24px 10px;color:var(--muted)}.hidden{display:none!important}#notice{margin-bottom:12px;color:var(--primary);font-weight:650;min-height:1.2em}
@@ -41,15 +42,16 @@ button.mic.recording{background:var(--danger);color:#fff;border-color:var(--dang
 .dictate-status{min-height:1.2em}
 @media(prefers-reduced-motion:reduce){button.mic.recording{animation:none}}
 /* Vista guardada */
-#viewBody{margin-top:14px}
-.vline{display:flex;gap:12px;margin-top:12px;font-size:1.05rem;line-height:1.5}
+#viewBody{margin-top:8px}
+.vturno{font-size:1.05rem;font-weight:600;line-height:1.5}
+.vline{display:flex;gap:12px;margin-top:8px;font-size:1.05rem;line-height:1.5}
 .vline .dot{flex:none;width:1em;text-align:center;color:var(--primary);font-size:.8em;line-height:1.9}
 .vline .t{min-width:0;overflow-wrap:anywhere;white-space:pre-wrap}
 /* Vista previa tipo WhatsApp */
 details.msg{margin-top:16px}details.msg summary{cursor:pointer;color:var(--muted);font-weight:600;padding:6px 0}
 #msgPreview{margin:8px 0 0;padding:10px 12px;background:#d9fdd3;color:#111b21;border-radius:10px 10px 10px 2px;font-family:Roboto,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;font-size:.97rem;line-height:1.4;overflow-wrap:anywhere}
 @media(prefers-color-scheme:dark){#msgPreview{background:#005c4b;color:#e9edef}}
-.wa-title{font-weight:700}.wa-gap{height:.75em}.wa-line{display:flex;gap:.6em}.wa-line .b{flex:none}.wa-line .t{min-width:0;white-space:pre-wrap}
+.wa-title{font-weight:700}.wa-turno{white-space:pre-wrap}.wa-line{display:flex;gap:.6em}.wa-line .b{flex:none}.wa-line .t{min-width:0;white-space:pre-wrap}
 /* Botones del parte */
 .mainBtns{display:flex;flex-direction:column;gap:16px;margin-top:18px}
 .rowA{display:flex;gap:16px}.rowA button{flex:1 1 0;min-height:50px;font-size:1rem;padding:12px}
@@ -90,7 +92,7 @@ details.msg{margin-top:16px}details.msg summary{cursor:pointer;color:var(--muted
 <input class="hidden" type="file" id="importFile" accept=".json,application/json">
 </div>
 <section class="card" id="partCard">
-<div class="row"><h2 id="partHeading">PARTE</h2><span class="muted" id="partTag"></span></div>
+<div class="partHead"><span class="muted tag" id="partTag"></span><h2 id="partHeading">PARTE</h2></div>
 <div id="editArea">
 <div class="turno"><b>Turno:</b><input type="text" id="turnoDesde" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Turno: desde (formato 24 horas)"><span>a</span><input type="text" id="turnoHasta" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Turno: hasta (formato 24 horas)"></div>
 <label for="novedades">Novedades</label>
@@ -163,24 +165,26 @@ function persistDrafts(){try{localStorage.setItem(DKEY,JSON.stringify(drafts))}c
 function saveLastTurno(){try{localStorage.setItem(TURNO_KEY,JSON.stringify(lastTurno))}catch(e){}}
 
 /* ===== Mensaje para WhatsApp ===== */
-function lineItems(p){
- const items=[];
- if(TIME_RE.test(p.desde||'')&&TIME_RE.test(p.hasta||''))items.push(`Turno: ${p.desde} a ${p.hasta}.`);
- String(p.text||'').split('\n').map(s=>s.trim()).filter(Boolean).forEach(l=>items.push(l));
- return items;
-}
-/* Título en negrita de WhatsApp (*...*), línea en blanco y luego una viñeta grande por línea */
+const noteLines=t=>String(t||'').split('\n').map(x=>x.replace(/^\s*●\s*/,'').trim()).filter(Boolean);
+const fromDisplay=v=>noteLines(v).join('\n');
+const toDisplay=t=>noteLines(t).map(l=>BULLET+' '+l).join('\n');
+function bulletize(v){return String(v||'').split('\n').map(l=>l.trim()===''?l:(l.startsWith(BULLET+' ')?l:BULLET+' '+l.replace(/^\s*●?\s*/,''))).join('\n')}
+function turnoLine(p){return TIME_RE.test(p.desde||'')&&TIME_RE.test(p.hasta||'')?`Turno: ${p.desde} a ${p.hasta}.`:''}
+/* Título en negrita de WhatsApp (*...*), Turno sin viñeta y una viñeta grande por cada línea de novedades */
 function buildMessage(p){
- const title=`*PARTE ${fmtDate(p.date)} ${UNIT}*`,items=lineItems(p);
- return items.length?title+'\n\n'+items.map(l=>`${BULLET} ${l}`).join('\n'):title;
+ const out=[`*PARTE ${fmtDate(p.date)} ${UNIT}*`],t=turnoLine(p);
+ if(t)out.push(t);
+ noteLines(p.text).forEach(l=>out.push(`${BULLET} ${l}`));
+ return out.join('\n');
 }
 function previewHTML(p){
+ const t=turnoLine(p);
  let h=`<div class="wa-title">PARTE ${fmtDate(p.date)} ${UNIT}</div>`;
- const items=lineItems(p);
- if(items.length)h+='<div class="wa-gap"></div>'+items.map(l=>`<div class="wa-line"><span class="b">${BULLET}</span><span class="t">${safe(l)}</span></div>`).join('');
+ if(t)h+=`<div class="wa-turno">${safe(t)}</div>`;
+ h+=noteLines(p.text).map(l=>`<div class="wa-line"><span class="b">${BULLET}</span><span class="t">${safe(l)}</span></div>`).join('');
  return h;
 }
-const live=()=>({date:currentDate,desde:$('turnoDesde').value,hasta:$('turnoHasta').value,text:$('novedades').value});
+const live=()=>({date:currentDate,desde:$('turnoDesde').value,hasta:$('turnoHasta').value,text:fromDisplay($('novedades').value)});
 const fromSaved=(d,p)=>({date:d,desde:p.turno&&p.turno.desde,hasta:p.turno&&p.turno.hasta,text:p.text});
 function effective(d){
  const dr=drafts[d],p=db[d];
@@ -198,7 +202,7 @@ function updatePreview(){$('msgPreview').innerHTML=previewHTML(current())}
 function saveDraft(){
  if(mode!=='edit'||sig()===savedSig)return true;
  const v=live(),p=db[currentDate];
- const same=p&&v.text===p.text&&v.desde===(p.turno&&p.turno.desde)&&v.hasta===(p.turno&&p.turno.hasta);
+ const same=p&&v.text===fromDisplay(p.text)&&v.desde===(p.turno&&p.turno.desde)&&v.hasta===(p.turno&&p.turno.hasta);
  if(same||!v.text.trim()){delete drafts[currentDate];setSaveStatus('')}
  else{drafts[currentDate]={text:v.text,desde:v.desde,hasta:v.hasta};setSaveStatus('Borrador ✓')}
  persistDrafts();savedSig=sig();return true;
@@ -206,7 +210,7 @@ function saveDraft(){
 function loadInputs(p){
  $('turnoDesde').value=(p&&p.desde)||lastTurno.desde;$('turnoHasta').value=(p&&p.hasta)||lastTurno.hasta;
  $('turnoDesde').dataset.ok=$('turnoDesde').value;$('turnoHasta').dataset.ok=$('turnoHasta').value;
- $('novedades').value=(p&&p.text)||'';
+ $('novedades').value=toDisplay(p&&p.text);
 }
 function applyMode(){
  const edit=mode==='edit',has=!!db[currentDate];
@@ -218,8 +222,8 @@ function applyMode(){
  $('rowB').classList.toggle('hidden',!has);
  if(edit)autoGrow();
  else{
-  const p=fromSaved(currentDate,db[currentDate]||{text:''});
-  $('viewBody').innerHTML=lineItems(p).map(l=>`<div class="vline"><span class="dot">${BULLET}</span><span class="t">${safe(l)}</span></div>`).join('');
+  const p=fromSaved(currentDate,db[currentDate]||{text:''}),t=turnoLine(p);
+  $('viewBody').innerHTML=(t?`<div class="vturno">${safe(t)}</div>`:'')+noteLines(p.text).map(l=>`<div class="vline"><span class="dot">${BULLET}</span><span class="t">${safe(l)}</span></div>`).join('');
  }
  updatePreview();
 }
@@ -251,6 +255,40 @@ function commit(){
  delete drafts[currentDate];persistDrafts();
  if(persist()){render();notify('Parte guardado.')}
 }
+function normalizeBullets(){
+ const ta=$('novedades'),v=ta.value;if(!v)return;
+ const nv=bulletize(v);if(nv===v)return;
+ const pos=ta.selectionStart,A=v.split('\n'),B=nv.split('\n');let acc=0,shift=0,np=pos;
+ for(let i=0;i<A.length;i++){
+  const st=acc,en=acc+A[i].length,d=B[i].length-A[i].length;
+  if(pos>=st&&pos<=en)np=st+shift+Math.max(Math.min(B[i].length,pos-st+d),d?2:0);
+  shift+=d;acc=en+1;
+ }
+ ta.value=nv;try{ta.setSelectionRange(np,np)}catch(err){}
+}
+function fireInput(){$('novedades').dispatchEvent(new Event('input',{bubbles:true}))}
+const ta0=$('novedades');
+/* Cada Enter crea una viñeta nueva; Retroceso sobre una viñeta vacía la quita */
+ta0.addEventListener('beforeinput',e=>{
+ const v=ta0.value,s=ta0.selectionStart,en=ta0.selectionEnd;
+ if(e.inputType==='insertParagraph'||e.inputType==='insertLineBreak'){
+  e.preventDefault();
+  const ls=v.lastIndexOf('\n',s-1)+1,nl=v.indexOf('\n',s),line=v.slice(ls,nl<0?v.length:nl);
+  if(line.trim()===BULLET)return;
+  ta0.setRangeText('\n'+BULLET+' ',s,en,'end');fireInput();return;
+ }
+ if(e.inputType==='deleteContentBackward'&&s===en){
+  const ls=v.lastIndexOf('\n',s-1)+1;
+  if(s===ls+2&&v.slice(ls,s)===BULLET+' '){
+   e.preventDefault();
+   if(ls>0){ta0.setRangeText('',ls-1,s,'end');fireInput()}
+   else if(v.trim()===BULLET){ta0.value='';fireInput()}
+  }
+ }
+});
+ta0.addEventListener('input',normalizeBullets);
+ta0.addEventListener('focus',()=>{if(!ta0.value)ta0.value=BULLET+' ';try{ta0.setSelectionRange(ta0.value.length,ta0.value.length)}catch(err){}});
+ta0.addEventListener('blur',()=>{if(ta0.value.trim()===BULLET){ta0.value='';fireInput()}});
 let saveTimer=null;
 $('novedades').addEventListener('input',()=>{setSaveStatus('Escribiendo…');autoGrow();updatePreview();clearTimeout(saveTimer);saveTimer=setTimeout(saveDraft,500)});
 function fixHora(v){
@@ -353,9 +391,11 @@ function micLabel(btn,on){btn.classList.toggle('recording',on);btn.setAttribute(
 function micStatus(id,msg){const el=$('status-'+id);if(el)el.textContent=msg||''}
 function joinText(base,add){
  if(!add)return base;
- if(!base)return add.charAt(0).toUpperCase()+add.slice(1);
- if(/\s$/.test(base))return base+(/[.!?]\s*$/.test(base)?add.charAt(0).toUpperCase()+add.slice(1):add);
- return base+' '+(/[.!?]$/.test(base)?add.charAt(0).toUpperCase()+add.slice(1):add);
+ const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+ if(!base)return cap(add);
+ const st=/[.!?]\s*$/.test(base)||/(^|\n)●\s*$/.test(base);
+ if(/\s$/.test(base))return base+(st?cap(add):add);
+ return base+' '+(st?cap(add):add);
 }
 function stopDictation(){
  wantListening=false;
@@ -376,7 +416,7 @@ function beginSession(btn){
    /* Se toma solo el último resultado y se REEMPLAZA (nunca se suma), así no se duplica el texto */
    const last=e.results[e.results.length-1];
    finalText=last[0].transcript.trim();
-   ta.value=joinText(baseText,finalText);ta.scrollTop=ta.scrollHeight;
+   ta.value=bulletize(joinText(baseText,finalText));ta.scrollTop=ta.scrollHeight;
    return;
   }
   let interim='';
@@ -386,7 +426,7 @@ function beginSession(btn){
    else interim+=t;
   }
   const shown=finalText+(interim?(finalText?' ':'')+interim.trim():'');
-  ta.value=joinText(baseText,shown);
+  ta.value=bulletize(joinText(baseText,shown));
   ta.scrollTop=ta.scrollHeight;
  };
  r.onerror=e=>{
@@ -399,7 +439,7 @@ function beginSession(btn){
  r.onend=()=>{
   if(rec!==r)return;
   if(wantListening){
-   ta.value=joinText(baseText,finalText);
+   ta.value=bulletize(joinText(baseText,finalText));
    emptyRuns=finalText?0:emptyRuns+1;
    if(emptyRuns>=4){notify('Dictado detenido: no se escuchó nada.');stopDictation();return}
    /* El navegador corta solo tras una frase o un silencio: si el usuario no detuvo, se reanuda */
