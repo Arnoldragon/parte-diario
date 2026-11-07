@@ -23,14 +23,19 @@ button.secondary{background:var(--soft);color:var(--text);border:1px solid var(-
 button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #79aef8;outline-offset:2px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 3px 12px #00000008}
 .row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.row h2{margin:0;font-size:1.12rem}.muted{color:var(--muted);font-size:.9rem}
-#partHeading{font-size:1.5rem;font-weight:800;line-height:1.2;letter-spacing:.01em;margin:0}
+#partHeading{font-size:1.28rem;font-weight:800;line-height:1.2;letter-spacing:.01em;margin:0}
 .tag{display:block;font-size:.74rem;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
 label{display:block;font-weight:650;margin:12px 0 6px}
-textarea,.turno input{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px}
+textarea,input[type=text]{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px}
 textarea{width:100%;resize:none;overflow:hidden}
-#novedades{min-height:120px;font-size:1.05rem;line-height:1.5}
+#motivos{min-height:96px;font-size:1.05rem;line-height:1.5}
+#lugar{flex:1;min-width:0;font-size:1.05rem}
 .turno{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:nowrap}
-.turno b{margin-right:2px}.turno input{width:92px;font-size:1.1rem;text-align:center;padding:10px 6px;font-weight:600;letter-spacing:.02em}
+.turno b{margin-right:2px}.turno input,#hora{width:92px;font-size:1.1rem;text-align:center;padding:10px 6px;font-weight:600;letter-spacing:.02em}
+.fechaLine{margin-top:10px;font-size:1.05rem}
+.field{margin-top:16px}.field>label{margin:0 0 6px}.field>label .b{color:var(--primary)}
+.inl{display:flex;gap:8px;align-items:stretch}.hrow2{display:flex;gap:10px;align-items:center}
+.hrow2 button{padding:10px 12px;font-size:.92rem}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{padding:8px 11px;font-size:.9rem}
 .empty{text-align:center;padding:24px 10px;color:var(--muted)}.hidden{display:none!important}#notice{margin-bottom:12px;color:var(--primary);font-weight:650;min-height:1.2em}
 dialog{max-width:560px;width:calc(100% - 28px);border:1px solid var(--border);border-radius:16px;padding:20px;background:var(--surface);color:var(--text)}dialog::backdrop{background:#0008}dialog h2{margin-top:0}
@@ -86,18 +91,20 @@ details.msg{margin-top:16px}details.msg summary{cursor:pointer;color:var(--muted
 <main>
 <div id="notice" role="status" aria-live="polite"></div>
 <div class="toolbar">
-<button id="newPartBtn">＋ Parte de hoy</button>
+<button id="newPartBtn">＋ Nuevo parte</button>
 <button class="secondary" id="historyBtn">▤ Historial</button>
 <div class="menu-wrap"><button class="secondary menu-btn" id="menuBtn" aria-label="Más opciones" aria-haspopup="true" aria-expanded="false">⋮</button><div class="menu hidden" id="menu" role="menu"><button role="menuitem" id="exportBtn">⇩ Exportar respaldo</button><button role="menuitem" id="importBtn">⇧ Importar respaldo</button><button role="menuitem" id="installBtn" class="hidden">⬇ Instalar app</button></div></div>
 <input class="hidden" type="file" id="importFile" accept=".json,application/json">
 </div>
 <section class="card" id="partCard">
-<div class="partHead"><span class="muted tag" id="partTag"></span><h2 id="partHeading">PARTE</h2></div>
+<div class="partHead"><span class="muted tag" id="partTag"></span><h2 id="partHeading">PARTE DE INCIDENCIAS G.U.M</h2></div>
 <div id="editArea">
 <div class="turno"><b>Turno:</b><input type="text" id="turnoDesde" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Turno: desde (formato 24 horas)"><span>a</span><input type="text" id="turnoHasta" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Turno: hasta (formato 24 horas)"></div>
-<label for="novedades">Novedades</label>
-<textarea id="novedades" rows="3" placeholder="Durante el turno correspondiente los agentes..." autocapitalize="sentences"></textarea>
-<div class="dictate-bar"><button type="button" class="secondary mic" data-target="novedades" aria-pressed="false">🎤 Dictar</button><span class="muted dictate-status" id="status-novedades" aria-live="polite"></span><span class="muted" id="saveStatus" style="margin-left:auto" aria-live="polite"></span></div>
+<div class="fechaLine"><b>Fecha:</b> <span id="fechaTxt"></span></div>
+<div class="field"><label for="hora"><span class="b">●</span> Hora:</label><div class="hrow2"><input type="text" id="hora" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Hora del hecho (formato 24 horas)"><button type="button" class="secondary" id="nowBtn">🕒 Ahora</button></div></div>
+<div class="field"><label for="lugar"><span class="b">●</span> Lugar:</label><div class="inl"><input type="text" id="lugar" autocomplete="off" autocapitalize="sentences" placeholder="¿Dónde ocurrió?"><button type="button" class="secondary mic" data-target="lugar" aria-pressed="false">🎤 Dictar</button></div><div class="muted dictate-status" id="status-lugar" aria-live="polite"></div></div>
+<div class="field"><label for="motivos"><span class="b">●</span> MOTIVOS:</label><textarea id="motivos" rows="3" placeholder="Describí el motivo o lo ocurrido..." autocapitalize="sentences"></textarea>
+<div class="dictate-bar"><button type="button" class="secondary mic" data-target="motivos" aria-pressed="false">🎤 Dictar</button><span class="muted dictate-status" id="status-motivos" aria-live="polite"></span><span class="muted" id="saveStatus" style="margin-left:auto" aria-live="polite"></span></div></div>
 </div>
 <div id="viewArea" class="hidden"><div id="viewBody"></div></div>
 <details class="msg"><summary>Ver cómo queda para WhatsApp</summary><div id="msgPreview"></div></details>
@@ -117,36 +124,47 @@ const KEY='parteDiarioActividades_v1';
 const DKEY='parteDiario_borradores';
 const TURNO_KEY='parteDiario_ultimoTurno';
 const UNIT='G.U.M';
+const TITLE='PARTE DE INCIDENCIAS';
 const BULLET='●';
 const $=id=>document.getElementById(id);
 const pad=n=>String(n).padStart(2,'0');
 const today=()=>{const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`};
-const fmtDate=date=>{if(!date)return '';const [y,m,d]=date.split('-');return `${d}/${m}/${y}`};
+const nowHM=()=>{const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinutes())}`};
+const fmtDate=date=>{if(!date)return '';const [y,m,d]=date.split('-');return `${d}/${m}/${y.slice(2)}`};
 const DATE_RE=/^\d{4}-\d{2}-\d{2}$/,TIME_RE=/^\d{2}:\d{2}$/;
+const newId=()=>`${today()}_${Math.random().toString(36).slice(2,8)}`;
 function safe(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function notify(s){$('notice').textContent=s;setTimeout(()=>{if($('notice').textContent===s)$('notice').textContent=''},4500)}
+const multi=v=>String(v||'').split('\n').map(x=>x.trim()).filter(Boolean).join('\n');
+const oneLine=v=>String(v||'').replace(/\s+/g,' ').trim();
 
-/* ===== Datos (con migración del formato anterior por actividades) ===== */
+/* ===== Datos (con migración de formatos anteriores) ===== */
 function pointsToText(points){return points.map((pt,i)=>{let t=`${i+1}. ${String(pt.activity||'').trim()}`;if(pt.observations&&String(pt.observations).trim())t+=`\n   Observaciones: ${String(pt.observations).trim()}`;return t}).join('\n\n')}
 function validTurno(t){return t&&typeof t==='object'&&TIME_RE.test(t.desde||'')&&TIME_RE.test(t.hasta||'')?{desde:t.desde,hasta:t.hasta}:null}
-function normalizePart(p){
+function normalizePart(p,key){
  if(!p||typeof p!=='object')return null;
- const text=typeof p.text==='string'?p.text:(Array.isArray(p.points)?pointsToText(p.points):'');
- if(!text.trim())return null;
- const out={text};const t=validTurno(p.turno);if(t)out.turno=t;return out;
+ const k=String(key||'');
+ const date=DATE_RE.test(p.date||'')?p.date:(DATE_RE.test(k.slice(0,10))?k.slice(0,10):null);
+ if(!date)return null;
+ let motivos='',lugar='',hora='';
+ if(typeof p.motivos==='string'||typeof p.lugar==='string'){motivos=String(p.motivos||'');lugar=String(p.lugar||'');hora=TIME_RE.test(p.hora||'')?p.hora:''}
+ else motivos=typeof p.text==='string'?p.text:(Array.isArray(p.points)?pointsToText(p.points):'');
+ if(!motivos.trim()&&!lugar.trim())return null;
+ const out={id:k,date,created:Number(p.created)||Date.parse(date+'T00:00:00')||0,hora,lugar,motivos};
+ const t=validTurno(p.turno);if(t)out.turno=t;
+ return out;
 }
 function loadDB(){
  let raw=null;try{raw=localStorage.getItem(KEY)}catch(e){}
  let x={};try{x=JSON.parse(raw||'{}')}catch(e){x={}}
  if(!x||typeof x!=='object')x={};
  const out={};let changed=false;
- Object.keys(x).forEach(d=>{
-  if(!DATE_RE.test(d))return;
-  const n=normalizePart(x[d]);
-  if(n){out[d]=Object.assign({date:d},n);if(typeof x[d].text!=='string')changed=true}else changed=true;
+ Object.keys(x).forEach(k=>{
+  const n=normalizePart(x[k],k);
+  if(n){out[k]=n;if(typeof x[k].motivos!=='string'&&typeof x[k].lugar!=='string')changed=true}else changed=true;
  });
  if(changed&&raw){
-  try{if(!localStorage.getItem(KEY+'_respaldo_formato_anterior'))localStorage.setItem(KEY+'_respaldo_formato_anterior',raw)}catch(e){}
+  try{if(!localStorage.getItem(KEY+'_respaldo_formato_novedades'))localStorage.setItem(KEY+'_respaldo_formato_novedades',raw)}catch(e){}
   try{localStorage.setItem(KEY,JSON.stringify(out))}catch(e){}
  }
  return out;
@@ -154,143 +172,128 @@ function loadDB(){
 function loadDrafts(){
  try{
   const x=JSON.parse(localStorage.getItem(DKEY)||'{}'),out={};
-  Object.keys(x||{}).forEach(d=>{const v=x[d];if(DATE_RE.test(d)&&v&&typeof v.text==='string'&&v.text.trim())out[d]={text:v.text,desde:String(v.desde||''),hasta:String(v.hasta||'')}});
+  Object.keys(x||{}).forEach(k=>{
+   const v=x[k];if(!v||typeof v!=='object')return;
+   const motivos=typeof v.motivos==='string'?v.motivos:(typeof v.text==='string'?v.text:''),lugar=String(v.lugar||'');
+   if(!motivos.trim()&&!lugar.trim())return;
+   out[k]={date:DATE_RE.test(v.date||'')?v.date:(DATE_RE.test(k.slice(0,10))?k.slice(0,10):today()),created:Number(v.created)||Date.now(),desde:String(v.desde||''),hasta:String(v.hasta||''),hora:TIME_RE.test(v.hora||'')?v.hora:'',lugar,motivos};
+  });
   return out;
  }catch(e){return {}}
 }
 function loadTurno(){try{return validTurno(JSON.parse(localStorage.getItem(TURNO_KEY)))||{desde:'12:00',hasta:'18:00'}}catch(e){return {desde:'12:00',hasta:'18:00'}}}
-let db=loadDB(),drafts=loadDrafts(),lastTurno=loadTurno(),currentDate=today(),lastToday=currentDate,savedSig='',mode='edit';
+let db=loadDB(),drafts=loadDrafts(),lastTurno=loadTurno();
+let cur={id:newId(),date:today(),created:Date.now()},mode='edit',savedSig='',horaTouched=false;
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(db));return true}catch(e){notify('No se pudieron guardar los datos en este navegador. Exportá un respaldo y liberá espacio.');return false}}
 function persistDrafts(){try{localStorage.setItem(DKEY,JSON.stringify(drafts))}catch(e){}}
 function saveLastTurno(){try{localStorage.setItem(TURNO_KEY,JSON.stringify(lastTurno))}catch(e){}}
 
 /* ===== Mensaje para WhatsApp ===== */
-const noteLines=t=>String(t||'').split('\n').map(x=>x.replace(/^\s*●\s*/,'').trim()).filter(Boolean);
-const fromDisplay=v=>noteLines(v).join('\n');
-const toDisplay=t=>noteLines(t).map(l=>BULLET+' '+l).join('\n');
-function bulletize(v){return String(v||'').split('\n').map(l=>l.trim()===''?l:(l.startsWith(BULLET+' ')?l:BULLET+' '+l.replace(/^\s*●?\s*/,''))).join('\n')}
 function turnoLine(p){return TIME_RE.test(p.desde||'')&&TIME_RE.test(p.hasta||'')?`Turno: ${p.desde} a ${p.hasta}.`:''}
-/* Título en negrita de WhatsApp (*...*), Turno sin viñeta y una viñeta grande por cada línea de novedades */
+/* Título (negrita), Turno y Fecha sin viñeta; Hora, Lugar y MOTIVOS con viñeta */
+function messageParts(p){
+ const plain=[],bullets=[],t=turnoLine(p);
+ if(t)plain.push(t);
+ plain.push(`Fecha: ${fmtDate(p.date)}`);
+ const hora=TIME_RE.test(p.hora||'')?p.hora:'',lugar=oneLine(p.lugar),motivos=multi(p.motivos);
+ bullets.push(['Hora',hora],['Lugar',lugar],['MOTIVOS',motivos]);
+ return {plain,bullets};
+}
 function buildMessage(p){
- const out=[`*PARTE ${fmtDate(p.date)} ${UNIT}*`],t=turnoLine(p);
- if(t)out.push(t);
- noteLines(p.text).forEach(l=>out.push(`${BULLET} ${l}`));
- return out.join('\n');
+ const m=messageParts(p);
+ return [`*${TITLE} ${UNIT}*`].concat(m.plain,m.bullets.map(([k,v])=>`${BULLET} ${k}:${v?' '+v:''}`)).join('\n');
 }
 function previewHTML(p){
- const t=turnoLine(p);
- let h=`<div class="wa-title">PARTE ${fmtDate(p.date)} ${UNIT}</div>`;
- if(t)h+=`<div class="wa-turno">${safe(t)}</div>`;
- h+=noteLines(p.text).map(l=>`<div class="wa-line"><span class="b">${BULLET}</span><span class="t">${safe(l)}</span></div>`).join('');
- return h;
+ const m=messageParts(p);
+ return `<div class="wa-title">${TITLE} ${UNIT}</div>`+m.plain.map(l=>`<div class="wa-turno">${safe(l)}</div>`).join('')+
+  m.bullets.map(([k,v])=>`<div class="wa-line"><span class="b">${BULLET}</span><span class="t">${safe(k)}:${v?' '+safe(v):''}</span></div>`).join('');
 }
-const live=()=>({date:currentDate,desde:$('turnoDesde').value,hasta:$('turnoHasta').value,text:fromDisplay($('novedades').value)});
-const fromSaved=(d,p)=>({date:d,desde:p.turno&&p.turno.desde,hasta:p.turno&&p.turno.hasta,text:p.text});
-function effective(d){
- const dr=drafts[d],p=db[d];
- if(dr&&dr.text.trim())return {date:d,desde:dr.desde,hasta:dr.hasta,text:dr.text};
- return p?fromSaved(d,p):null;
+const live=()=>({id:cur.id,date:cur.date,created:cur.created,desde:$('turnoDesde').value,hasta:$('turnoHasta').value,hora:$('hora').value,lugar:$('lugar').value,motivos:$('motivos').value});
+const fromSaved=p=>({id:p.id,date:p.date,created:p.created,desde:p.turno&&p.turno.desde,hasta:p.turno&&p.turno.hasta,hora:p.hora,lugar:p.lugar,motivos:p.motivos});
+const hasContent=v=>!!(String(v.lugar||'').trim()||String(v.motivos||'').trim());
+function effective(id){
+ const dr=drafts[id],p=db[id];
+ if(dr&&hasContent(dr))return Object.assign({id},dr);
+ return p?fromSaved(p):null;
 }
-const current=()=>mode==='edit'?live():(db[currentDate]?fromSaved(currentDate,db[currentDate]):live());
+const current=()=>mode==='edit'?live():(db[cur.id]?fromSaved(db[cur.id]):live());
 
 /* ===== Edición, borrador automático y guardado ===== */
 function setSaveStatus(s){$('saveStatus').textContent=s}
-const sig=()=>$('novedades').value+'|'+$('turnoDesde').value+'|'+$('turnoHasta').value;
-function autoGrow(){const ta=$('novedades');if($('editArea').classList.contains('hidden'))return;ta.style.height='auto';ta.style.height=Math.max(ta.scrollHeight+2,120)+'px'}
+const sig=()=>[$('turnoDesde').value,$('turnoHasta').value,$('hora').value,$('lugar').value,$('motivos').value].join('|');
+function autoGrow(){const ta=$('motivos');if($('editArea').classList.contains('hidden'))return;ta.style.height='auto';ta.style.height=Math.max(ta.scrollHeight+2,96)+'px'}
 function updatePreview(){$('msgPreview').innerHTML=previewHTML(current())}
+function sameAsSaved(v){
+ const p=db[cur.id];if(!p)return false;
+ return v.hora===p.hora&&v.lugar===p.lugar&&v.motivos===p.motivos&&v.desde===(p.turno&&p.turno.desde)&&v.hasta===(p.turno&&p.turno.hasta);
+}
 /* El borrador se guarda solo mientras escribís, para no perder nada. "Guardar" lo confirma. */
 function saveDraft(){
  if(mode!=='edit'||sig()===savedSig)return true;
- const v=live(),p=db[currentDate];
- const same=p&&v.text===fromDisplay(p.text)&&v.desde===(p.turno&&p.turno.desde)&&v.hasta===(p.turno&&p.turno.hasta);
- if(same||!v.text.trim()){delete drafts[currentDate];setSaveStatus('')}
- else{drafts[currentDate]={text:v.text,desde:v.desde,hasta:v.hasta};setSaveStatus('Borrador ✓')}
+ const v=live();
+ if(sameAsSaved(v)||!hasContent(v)){delete drafts[cur.id];setSaveStatus('')}
+ else{drafts[cur.id]={date:cur.date,created:cur.created,desde:v.desde,hasta:v.hasta,hora:v.hora,lugar:v.lugar,motivos:v.motivos};setSaveStatus('Borrador ✓')}
  persistDrafts();savedSig=sig();return true;
 }
-function loadInputs(p){
- $('turnoDesde').value=(p&&p.desde)||lastTurno.desde;$('turnoHasta').value=(p&&p.hasta)||lastTurno.hasta;
- $('turnoDesde').dataset.ok=$('turnoDesde').value;$('turnoHasta').dataset.ok=$('turnoHasta').value;
- $('novedades').value=toDisplay(p&&p.text);
+function loadFields(v){
+ v=v||{};
+ const t=(v.desde&&v.hasta)?{desde:v.desde,hasta:v.hasta}:lastTurno;
+ $('turnoDesde').value=t.desde;$('turnoHasta').value=t.hasta;
+ $('hora').value=v.hora||'';$('lugar').value=v.lugar||'';$('motivos').value=v.motivos||'';
+ ['turnoDesde','turnoHasta','hora'].forEach(id=>{$(id).dataset.ok=$(id).value});
 }
 function applyMode(){
- const edit=mode==='edit',has=!!db[currentDate];
+ const edit=mode==='edit',has=!!db[cur.id];
  $('editArea').classList.toggle('hidden',!edit);$('viewArea').classList.toggle('hidden',edit);
  $('saveBtn').classList.toggle('hidden',!edit);
  $('cancelBtn').classList.toggle('hidden',!(edit&&has));
  $('editBtn').classList.toggle('hidden',edit);
  $('deletePartBtn').classList.toggle('hidden',!has);
  $('rowB').classList.toggle('hidden',!has);
+ $('partTag').textContent=edit?(has?'Editando parte guardado':'Nuevo parte'):'Parte guardado';
+ $('fechaTxt').textContent=fmtDate(cur.date);
  if(edit)autoGrow();
  else{
-  const p=fromSaved(currentDate,db[currentDate]||{text:''}),t=turnoLine(p);
-  $('viewBody').innerHTML=(t?`<div class="vturno">${safe(t)}</div>`:'')+noteLines(p.text).map(l=>`<div class="vline"><span class="dot">${BULLET}</span><span class="t">${safe(l)}</span></div>`).join('');
+  const m=messageParts(fromSaved(db[cur.id]));
+  $('viewBody').innerHTML=m.plain.map(l=>`<div class="vturno">${safe(l)}</div>`).join('')+
+   m.bullets.map(([k,v])=>`<div class="vline"><span class="dot">${BULLET}</span><span class="t"><b>${safe(k)}:</b>${v?' '+safe(v):''}</span></div>`).join('');
  }
  updatePreview();
 }
-function render(){
- const p=effective(currentDate);
- mode=(drafts[currentDate]||!db[currentDate])?'edit':'view';
- $('partHeading').textContent=`PARTE ${fmtDate(currentDate)} ${UNIT}`;
- $('partTag').textContent=currentDate===today()?'Hoy':'Parte anterior';
- loadInputs(mode==='edit'?p:null);
- if(mode==='view')loadInputs(fromSaved(currentDate,db[currentDate]));
- savedSig=sig();setSaveStatus(drafts[currentDate]?'Borrador ✓':'');
- applyMode();
+/* Formulario nuevo: fecha de hoy y hora actual */
+function resetForm(){
+ cur={id:newId(),date:today(),created:Date.now()};
+ loadFields({hora:nowHM()});horaTouched=false;mode='edit';
+ savedSig=sig();setSaveStatus('');
+}
+function newForm(){stopDictation();saveDraft();resetForm();showMain(true);applyMode();$('lugar').focus()}
+function openPart(id){
+ stopDictation();saveDraft();
+ const e=effective(id);if(!e)return;
+ cur={id,date:e.date,created:e.created||Date.now()};
+ mode=(drafts[id]||!db[id])?'edit':'view';
+ loadFields(mode==='edit'?e:fromSaved(db[id]));
+ horaTouched=true;savedSig=sig();setSaveStatus(drafts[id]?'Borrador ✓':'');
+ showMain(true);applyMode();
 }
 function startEdit(){
  stopDictation();
- mode='edit';const p=db[currentDate];
- loadInputs(p?fromSaved(currentDate,p):null);savedSig=sig();setSaveStatus('');
- applyMode();$('novedades').focus();
+ mode='edit';loadFields(fromSaved(db[cur.id]));horaTouched=true;savedSig=sig();setSaveStatus('');
+ applyMode();$('lugar').focus();
 }
-function cancelEdit(){stopDictation();delete drafts[currentDate];persistDrafts();render();notify('Cambios descartados.')}
+function cancelEdit(){stopDictation();delete drafts[cur.id];persistDrafts();openPart(cur.id);notify('Cambios descartados.')}
 function commit(){
  stopDictation();
- const v=live();
- if(!v.text.trim()){notify('Escribí las novedades antes de guardar.');$('novedades').focus();return}
- const t=validTurno({desde:v.desde,hasta:v.hasta});
+ const v=live(),t=validTurno({desde:v.desde,hasta:v.hasta});
+ if(!hasContent(v)){notify('Completá el lugar y los motivos antes de guardar.');$('lugar').focus();return}
  if(!t){notify('Completá el turno: hora de inicio y de fin.');return}
- db[currentDate]={date:currentDate,text:v.text,turno:t};
+ db[cur.id]={id:cur.id,date:cur.date,created:cur.created,turno:t,hora:TIME_RE.test(v.hora)?v.hora:'',lugar:v.lugar.trim(),motivos:v.motivos.trim()};
  lastTurno=t;saveLastTurno();
- delete drafts[currentDate];persistDrafts();
- if(persist()){render();notify('Parte guardado.')}
+ delete drafts[cur.id];persistDrafts();
+ if(persist()){openPart(cur.id);notify('Parte guardado.')}
 }
-function normalizeBullets(){
- const ta=$('novedades'),v=ta.value;if(!v)return;
- const nv=bulletize(v);if(nv===v)return;
- const pos=ta.selectionStart,A=v.split('\n'),B=nv.split('\n');let acc=0,shift=0,np=pos;
- for(let i=0;i<A.length;i++){
-  const st=acc,en=acc+A[i].length,d=B[i].length-A[i].length;
-  if(pos>=st&&pos<=en)np=st+shift+Math.max(Math.min(B[i].length,pos-st+d),d?2:0);
-  shift+=d;acc=en+1;
- }
- ta.value=nv;try{ta.setSelectionRange(np,np)}catch(err){}
-}
-function fireInput(){$('novedades').dispatchEvent(new Event('input',{bubbles:true}))}
-const ta0=$('novedades');
-/* Cada Enter crea una viñeta nueva; Retroceso sobre una viñeta vacía la quita */
-ta0.addEventListener('beforeinput',e=>{
- const v=ta0.value,s=ta0.selectionStart,en=ta0.selectionEnd;
- if(e.inputType==='insertParagraph'||e.inputType==='insertLineBreak'){
-  e.preventDefault();
-  const ls=v.lastIndexOf('\n',s-1)+1,nl=v.indexOf('\n',s),line=v.slice(ls,nl<0?v.length:nl);
-  if(line.trim()===BULLET)return;
-  ta0.setRangeText('\n'+BULLET+' ',s,en,'end');fireInput();return;
- }
- if(e.inputType==='deleteContentBackward'&&s===en){
-  const ls=v.lastIndexOf('\n',s-1)+1;
-  if(s===ls+2&&v.slice(ls,s)===BULLET+' '){
-   e.preventDefault();
-   if(ls>0){ta0.setRangeText('',ls-1,s,'end');fireInput()}
-   else if(v.trim()===BULLET){ta0.value='';fireInput()}
-  }
- }
-});
-ta0.addEventListener('input',normalizeBullets);
-ta0.addEventListener('focus',()=>{if(!ta0.value)ta0.value=BULLET+' ';try{ta0.setSelectionRange(ta0.value.length,ta0.value.length)}catch(err){}});
-ta0.addEventListener('blur',()=>{if(ta0.value.trim()===BULLET){ta0.value='';fireInput()}});
 let saveTimer=null;
-$('novedades').addEventListener('input',()=>{setSaveStatus('Escribiendo…');autoGrow();updatePreview();clearTimeout(saveTimer);saveTimer=setTimeout(saveDraft,500)});
+['lugar','motivos'].forEach(id=>$(id).addEventListener('input',()=>{setSaveStatus('Escribiendo…');autoGrow();updatePreview();clearTimeout(saveTimer);saveTimer=setTimeout(saveDraft,500)}));
 function fixHora(v){
  const d=String(v||'').replace(/\D/g,'').slice(0,4);
  if(!d)return '';
@@ -299,7 +302,7 @@ function fixHora(v){
  h=h.padStart(2,'0');
  return (+h<24&&+m<60)?`${h}:${m}`:null;
 }
-['turnoDesde','turnoHasta'].forEach(id=>{
+['turnoDesde','turnoHasta','hora'].forEach(id=>{
  const el=$(id);
  el.addEventListener('input',()=>{const d=el.value.replace(/\D/g,'').slice(0,4);el.value=d.length>2?d.slice(0,2)+':'+d.slice(2):d;updatePreview()});
  el.addEventListener('focus',()=>{try{el.select()}catch(e){}});
@@ -307,28 +310,33 @@ function fixHora(v){
   const f=fixHora(el.value);
   if(f===null){el.value=el.dataset.ok||'';notify('Hora no válida. Usá formato de 24 horas, por ejemplo 18:00.')}
   else{el.value=f;el.dataset.ok=f}
+  if(id==='hora')horaTouched=true;
   updatePreview();saveDraft();
  });
 });
+$('nowBtn').addEventListener('click',()=>{$('hora').value=nowHM();$('hora').dataset.ok=$('hora').value;horaTouched=false;updatePreview();saveDraft()});
 setInterval(()=>{if(mode==='edit'){saveDraft();autoGrow();updatePreview()}},1500);
 window.addEventListener('pagehide',saveDraft);
 document.addEventListener('visibilitychange',()=>{
  if(document.hidden){stopDictation();saveDraft();return}
- const t=today();
- if(t!==lastToday){if(currentDate===lastToday){saveDraft();currentDate=t;render()}lastToday=t}
+ /* Si el formulario nuevo sigue vacío, se actualiza a la fecha y hora de este momento */
+ if(mode==='edit'&&!db[cur.id]&&!hasContent(live())){
+  cur.date=today();if(!horaTouched){$('hora').value=nowHM();$('hora').dataset.ok=$('hora').value}
+  savedSig=sig();applyMode();
+ }
 });
-function goTo(date){stopDictation();saveDraft();currentDate=date;showMain(true);render()}
 
 function askConfirm(title,msg,okText){return new Promise(res=>{const d=$('confirmDlg');$('cfTitle').textContent=title;$('cfMsg').textContent=msg;$('cfOk').textContent=okText||'Eliminar';let done=false;const fin=v=>{if(done)return;done=true;if(d.close)d.close();else d.removeAttribute('open');$('cfOk').onclick=null;$('cfCancel').onclick=null;d.oncancel=null;res(v)};$('cfOk').onclick=()=>fin(true);$('cfCancel').onclick=()=>fin(false);d.oncancel=e=>{e.preventDefault();fin(false)};if(d.showModal){if(!d.open)d.showModal()}else d.setAttribute('open','');$('cfCancel').focus()})}
-async function removePart(d){
- const ok=await askConfirm('Eliminar parte del '+fmtDate(d),'Se va a borrar este parte y todo su texto. Esta acción no se puede deshacer.','Sí, eliminar parte');
+async function removePart(id){
+ const e=effective(id),when=e?`${fmtDate(e.date)}${TIME_RE.test(e.hora||'')?' · '+e.hora:''}`:'';
+ const ok=await askConfirm('Eliminar parte'+(when?' del '+when:''),'Se va a borrar este parte y todo su texto. Esta acción no se puede deshacer.','Sí, eliminar parte');
  if(!ok)return false;
- delete db[d];delete drafts[d];persist();persistDrafts();return true;
+ delete db[id];delete drafts[id];persist();persistDrafts();return true;
 }
 async function deleteCurrent(){
  stopDictation();
- if(!db[currentDate]){notify('Este parte todavía no está guardado.');return}
- if(await removePart(currentDate)){render();notify('Parte eliminado.')}
+ if(!db[cur.id]){notify('Este parte todavía no está guardado.');return}
+ if(await removePart(cur.id)){resetForm();applyMode();notify('Parte eliminado.')}
 }
 async function copyText(t){
  try{await navigator.clipboard.writeText(t);return true}catch(e){}
@@ -337,22 +345,24 @@ async function copyText(t){
 async function copyCurrent(){
  stopDictation();saveDraft();
  const v=current();
- if(!String(v.text||'').trim()){notify('Escribí las novedades antes de copiar.');return}
+ if(!hasContent(v)){notify('Completá el lugar y los motivos antes de copiar.');return}
  if(await copyText(buildMessage(v)))notify('Texto copiado. Pegalo en WhatsApp.');else notify('No se pudo copiar. Abrí "Ver cómo queda para WhatsApp" y copialo a mano.');
 }
 function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function exportDB(){saveDraft();download('respaldo-partes-diarios-'+today()+'.json',JSON.stringify({format:'parte-diario',version:2,exportedAt:new Date().toISOString(),parts:db},null,2),'application/json');notify('Respaldo exportado. Guardalo en un lugar seguro.')}
+function exportDB(){saveDraft();download('respaldo-partes-'+today()+'.json',JSON.stringify({format:'parte-diario',version:3,exportedAt:new Date().toISOString(),parts:db},null,2),'application/json');notify('Respaldo exportado. Guardalo en un lugar seguro.')}
 function importDB(file){
  const r=new FileReader();
  r.onload=async()=>{
   try{
    const parsed=JSON.parse(r.result);const incoming=parsed.parts;
    if(!incoming||typeof incoming!=='object')throw new Error('Formato incorrecto');
-   if(!await askConfirm('Importar respaldo','Se combinarán los partes del archivo con los de este dispositivo. Si una fecha existe en ambos, se reemplazará por la versión importada.','Importar'))return;
+   if(!await askConfirm('Importar respaldo','Se combinarán los partes del archivo con los de este dispositivo. Si un parte existe en ambos, se reemplazará por la versión importada.','Importar'))return;
    stopDictation();saveDraft();
    let n=0;
-   Object.keys(incoming).forEach(d=>{if(!DATE_RE.test(d))return;const p=normalizePart(incoming[d]);if(p){db[d]=Object.assign({date:d},p);delete drafts[d];n++}});
-   persist();persistDrafts();render();notify(`Respaldo importado (${n} ${n===1?'parte':'partes'}).`);
+   Object.keys(incoming).forEach(k=>{const p=normalizePart(incoming[k],k);if(p){db[k]=p;delete drafts[k];n++}});
+   persist();persistDrafts();
+   if(db[cur.id]||drafts[cur.id])openPart(cur.id);else applyMode();
+   notify(`Respaldo importado (${n} ${n===1?'parte':'partes'}).`);
   }catch(e){notify('No se pudo importar. Elegí un archivo JSON de respaldo generado por esta aplicación.')}
  };
  r.readAsText(file);
@@ -361,25 +371,30 @@ function importDB(file){
 /* ===== Historial ===== */
 function showMain(on){$('partCard').classList.toggle('hidden',!on);$('historyCard').classList.toggle('hidden',on);window.scrollTo(0,0)}
 const TRASH='<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
-function historyDates(){
- return [...new Set([...Object.keys(db),...Object.keys(drafts)])].filter(d=>{const e=effective(d);return e&&String(e.text||'').trim()}).sort((a,b)=>b.localeCompare(a));
+function historyIds(){
+ const key=id=>{const e=effective(id);return e.date+'|'+String(e.created||0).padStart(15,'0')};
+ return [...new Set([...Object.keys(db),...Object.keys(drafts)])].filter(id=>{const e=effective(id);return e&&hasContent(e)}).sort((a,b)=>key(b).localeCompare(key(a)));
 }
 function renderHistoryList(){
- const dates=historyDates(),list=$('historyList');
+ const ids=historyIds(),list=$('historyList');
  list.innerHTML='';
- if(!dates.length)list.innerHTML='<p class="empty">Todavía no hay partes guardados.</p>';
- dates.forEach(d=>{
-  const e=effective(d),prev=(String(e.text).split('\n').find(l=>l.trim())||'').trim().slice(0,90);
-  const row=document.createElement('div');row.className='point hrow';row.dataset.open=d;
-  row.innerHTML=`<div class="row"><div class="hmain"><strong>${fmtDate(d)}</strong>${drafts[d]?'<span class="badge">Borrador</span>':''}<div class="muted hprev">${safe(prev)}</div></div><div class="actions"><button class="secondary" data-copy="${d}">Copiar</button><button class="secondary iconbtn del" data-del="${d}" aria-label="Eliminar parte" title="Eliminar">${TRASH}</button></div></div>`;
+ if(!ids.length)list.innerHTML='<p class="empty">Todavía no hay partes guardados.</p>';
+ ids.forEach(id=>{
+  const e=effective(id);
+  const prev=[oneLine(e.lugar),oneLine((String(e.motivos).split('\n').find(l=>l.trim())||''))].filter(Boolean).join(' — ').slice(0,100);
+  const row=document.createElement('div');row.className='point hrow';row.dataset.open=id;
+  row.innerHTML=`<div class="row"><div class="hmain"><strong>${fmtDate(e.date)}${TIME_RE.test(e.hora||'')?' · '+e.hora:''}</strong>${drafts[id]?'<span class="badge">Borrador</span>':''}<div class="muted hprev">${safe(prev)}</div></div><div class="actions"><button class="secondary" data-copy="${safe(id)}">Copiar</button><button class="secondary iconbtn del" data-del="${safe(id)}" aria-label="Eliminar parte" title="Eliminar">${TRASH}</button></div></div>`;
   list.appendChild(row);
  });
- list.querySelectorAll('[data-open]').forEach(b=>b.onclick=e=>{e.stopPropagation();goTo(b.dataset.open)});
+ list.querySelectorAll('[data-open]').forEach(b=>b.onclick=e=>{e.stopPropagation();openPart(b.dataset.open)});
  list.querySelectorAll('[data-copy]').forEach(b=>b.onclick=async e=>{e.stopPropagation();const ok=await copyText(buildMessage(effective(b.dataset.copy)));notify(ok?'Texto copiado. Pegalo en WhatsApp.':'No se pudo copiar.')});
- list.querySelectorAll('[data-del]').forEach(b=>b.onclick=async e=>{e.stopPropagation();const d=b.dataset.del;if(await removePart(d)){renderHistoryList();notify('Parte eliminado.')}});
+ list.querySelectorAll('[data-del]').forEach(b=>b.onclick=async e=>{
+  e.stopPropagation();const id=b.dataset.del;
+  if(await removePart(id)){if(id===cur.id){resetForm();applyMode()}renderHistoryList();notify('Parte eliminado.')}
+ });
 }
 function history(){stopDictation();saveDraft();renderHistoryList();showMain(false)}
-$('newPartBtn').onclick=()=>{goTo(today());lastToday=today();if(mode==='edit')$('novedades').focus()};
+$('newPartBtn').onclick=newForm;
 $('saveBtn').onclick=commit;$('editBtn').onclick=startEdit;$('cancelBtn').onclick=cancelEdit;$('deletePartBtn').onclick=deleteCurrent;$('copyBtn').onclick=copyCurrent;
 $('exportBtn').onclick=exportDB;$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=e=>{if(e.target.files[0])importDB(e.target.files[0]);e.target.value=''};
 $('historyBtn').onclick=history;$('closeHistoryBtn').onclick=()=>showMain(true);
@@ -387,7 +402,7 @@ $('historyBtn').onclick=history;$('closeHistoryBtn').onclick=()=>showMain(true);
 /* ===== Dictado por voz ===== */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 let rec=null,recBtn=null,wantListening=false,baseText='',finalText='';let emptyRuns=0;const ANDROID=/Android/i.test(navigator.userAgent);
-function micLabel(btn,on){btn.classList.toggle('recording',on);btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'⏹ Detener dictado':'🎤 Dictar'}
+function micLabel(btn,on){btn.classList.toggle('recording',on);btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'⏹ Detener':'🎤 Dictar'}
 function micStatus(id,msg){const el=$('status-'+id);if(el)el.textContent=msg||''}
 function joinText(base,add){
  if(!add)return base;
@@ -416,7 +431,7 @@ function beginSession(btn){
    /* Se toma solo el último resultado y se REEMPLAZA (nunca se suma), así no se duplica el texto */
    const last=e.results[e.results.length-1];
    finalText=last[0].transcript.trim();
-   ta.value=bulletize(joinText(baseText,finalText));ta.scrollTop=ta.scrollHeight;
+   ta.value=joinText(baseText,finalText);ta.scrollTop=ta.scrollHeight;
    return;
   }
   let interim='';
@@ -426,7 +441,7 @@ function beginSession(btn){
    else interim+=t;
   }
   const shown=finalText+(interim?(finalText?' ':'')+interim.trim():'');
-  ta.value=bulletize(joinText(baseText,shown));
+  ta.value=joinText(baseText,shown);
   ta.scrollTop=ta.scrollHeight;
  };
  r.onerror=e=>{
@@ -439,7 +454,7 @@ function beginSession(btn){
  r.onend=()=>{
   if(rec!==r)return;
   if(wantListening){
-   ta.value=bulletize(joinText(baseText,finalText));
+   ta.value=joinText(baseText,finalText);
    emptyRuns=finalText?0:emptyRuns+1;
    if(emptyRuns>=4){notify('Dictado detenido: no se escuchó nada.');stopDictation();return}
    /* El navegador corta solo tras una frase o un silencio: si el usuario no detuvo, se reanuda */
@@ -472,7 +487,12 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredIns
 window.addEventListener('appinstalled',()=>{deferredInstall=null;$('installBtn').classList.add('hidden');notify('App instalada.')});
 $('installBtn').addEventListener('click',async()=>{if(!deferredInstall)return;const ev=deferredInstall;deferredInstall=null;$('installBtn').classList.add('hidden');try{ev.prompt();await ev.userChoice}catch(err){}});
 
-render();
+/* Inicio: si había un borrador sin guardar, se retoma; si no, un formulario nuevo */
+(function init(){
+ const ids=Object.keys(drafts).filter(id=>hasContent(drafts[id])).sort((a,b)=>(drafts[b].created||0)-(drafts[a].created||0));
+ if(ids.length)openPart(ids[0]);
+ else{resetForm();applyMode()}
+})();
 })();
 </script>
 <script>
