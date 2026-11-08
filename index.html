@@ -139,7 +139,7 @@ main{padding-top:14px}
 <header class="bar"><div class="barBtns">
 <button id="newPartBtn">＋ Nuevo parte</button>
 <button id="historyBtn">▤ Historial</button>
-<div class="menu-wrap"><button class="secondary menu-btn" id="menuBtn" aria-label="Más opciones" aria-haspopup="true" aria-expanded="false">⋮</button><div class="menu hidden" id="menu" role="menu"><button role="menuitem" id="exportBtn">⇩ Exportar respaldo</button><button role="menuitem" id="importBtn">⇧ Importar respaldo</button><button role="menuitem" id="installBtn" class="hidden">⬇ Instalar app</button><div class="menuNote">Los datos se guardan solo en este dispositivo. Exportá respaldos de vez en cuando para conservar una copia.</div></div></div>
+<div class="menu-wrap"><button class="secondary menu-btn" id="menuBtn" aria-label="Más opciones" aria-haspopup="true" aria-expanded="false">⋮</button><div class="menu hidden" id="menu" role="menu"><button role="menuitem" id="exportBtn">⇩ Exportar respaldo</button><button role="menuitem" id="importBtn">⇧ Importar respaldo</button><button role="menuitem" id="spellBtn">✓ Corrector ortográfico: sí</button><button role="menuitem" id="installBtn" class="hidden">⬇ Instalar app</button><div class="menuNote">Los datos se guardan solo en este dispositivo. Exportá respaldos de vez en cuando para conservar una copia.</div></div></div>
 <input class="hidden" type="file" id="importFile" accept=".json,application/json">
 </div></header>
 <main>
@@ -150,10 +150,10 @@ main{padding-top:14px}
 <div class="turno"><b>Turno:</b><input type="text" id="turnoDesde" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Turno: desde (formato 24 horas)"><span>a</span><input type="text" id="turnoHasta" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Turno: hasta (formato 24 horas)"></div>
 <div class="fechaLine"><b>Fecha:</b> <span id="fechaTxt"></span></div>
 <div class="fld"><label for="hora"><span class="b">●</span> Hora:</label><input type="text" id="hora" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Hora del hecho (formato 24 horas)"></div>
-<div class="fld"><label for="lugar"><span class="b">●</span> Lugar:</label><input type="text" id="lugar" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="sentences" placeholder="¿Dónde ocurrió?"><button type="button" class="secondary mic icon" data-target="lugar" aria-pressed="false" aria-label="Dictar lugar" title="Dictar">🎤</button></div>
+<div class="fld"><label for="lugar"><span class="b">●</span> Lugar:</label><input type="text" id="lugar" autocomplete="off" spellcheck="true" autocapitalize="sentences" placeholder="¿Dónde ocurrió?"><button type="button" class="secondary mic icon" data-target="lugar" aria-pressed="false" aria-label="Dictar lugar" title="Dictar">🎤</button></div>
 <div class="muted dictate-status" id="status-lugar" aria-live="polite"></div>
 <div class="fieldGrow"><div class="fldHead"><label for="motivos"><span class="b">●</span> MOTIVOS:</label><span class="muted" id="saveStatus" aria-live="polite"></span><button type="button" class="secondary mic icon" data-target="motivos" aria-pressed="false" aria-label="Dictar motivos" title="Dictar">🎤</button></div>
-<textarea id="motivos" rows="3" placeholder="Describí el motivo o lo ocurrido..." autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="sentences"></textarea>
+<textarea id="motivos" rows="3" placeholder="Describí el motivo o lo ocurrido..." spellcheck="true" autocapitalize="sentences"></textarea>
 <div class="muted dictate-status" id="status-motivos" aria-live="polite"></div></div>
 </div>
 <div id="viewArea" class="hidden"><div id="viewBody"></div></div>
@@ -272,14 +272,17 @@ const current=()=>mode==='edit'?live():(db[cur.id]?fromSaved(db[cur.id]):live())
 function setSaveStatus(s){$('saveStatus').textContent=s}
 const sig=()=>[$('turnoDesde').value,$('turnoHasta').value,$('hora').value,$('lugar').value,$('motivos').value].join('|');
 const mBase=()=>Math.max(110,Math.min(190,Math.round(window.innerHeight*0.22)));
-function autoGrow(){
+let growVal=null,growH=0;
+function autoGrow(force){
  const ta=$('motivos');if($('editArea').classList.contains('hidden'))return;
- /* Altura base: aprox. una quinta parte de la pantalla; solo crece si el texto lo necesita */
+ /* Solo se recalcula si cambió el texto o el tamaño de pantalla: así la caja no se mueve mientras el teclado muestra sugerencias */
+ if(!force&&ta.value===growVal&&window.innerHeight===growH)return;
+ growVal=ta.value;growH=window.innerHeight;
  ta.style.height='auto';ta.style.minHeight='0';
  const h=Math.max(ta.scrollHeight+2,mBase());
  ta.style.minHeight=h+'px';ta.style.height='';
 }
-window.addEventListener('resize',autoGrow);
+window.addEventListener('resize',()=>autoGrow(true));
 /* Al Guardar o Copiar, la hora pasa a ser la de ese momento (salvo que la hayas fijado a mano o sea un parte ya guardado) */
 function autoHora(){
  if(mode!=='edit'||db[cur.id]||horaTouched||!hasContent(live()))return;
@@ -317,7 +320,7 @@ function applyMode(){
  $('closeBtn').classList.toggle('hidden',!(has||fromHist));
  $('partTag').textContent=edit?(has?'Editando parte guardado':'Nuevo parte'):'Parte guardado';
  $('fechaTxt').textContent=fmtDate(cur.date);
- if(edit)autoGrow();
+ if(edit)autoGrow(true);
  else{
   const m=messageParts(fromSaved(db[cur.id]));
   $('viewBody').innerHTML=m.plain.map(l=>`<div class="vturno">${safe(l)}</div>`).join('')+
@@ -379,7 +382,8 @@ function fixHora(v){
   updatePreview();saveDraft();
  });
 });
-setInterval(()=>{if(mode==='edit'){saveDraft();autoGrow();updatePreview()}},1500);
+let tickSig='';
+setInterval(()=>{if(mode!=='edit')return;const g=sig();if(g!==tickSig){tickSig=g;saveDraft();autoGrow();updatePreview()}},1500);
 window.addEventListener('pagehide',saveDraft);
 document.addEventListener('visibilitychange',()=>{
  if(document.hidden){stopDictation();saveDraft();return}
@@ -390,6 +394,16 @@ document.addEventListener('visibilitychange',()=>{
  }
 });
 
+/* Corrector ortográfico: activado por defecto; se puede apagar desde el menú ⋮ si alguna vez molesta */
+const SPELL_KEY='parteDiario_corrector';
+function spellOn(){try{return localStorage.getItem(SPELL_KEY)!=='0'}catch(e){return true}}
+function applySpell(){
+ const on=spellOn();
+ ['lugar','motivos'].forEach(id=>{const e=$(id);e.spellcheck=on;e.setAttribute('autocorrect',on?'on':'off')});
+ $('spellBtn').textContent=(on?'✓':'✕')+' Corrector ortográfico: '+(on?'sí':'no');
+}
+$('spellBtn').addEventListener('click',()=>{try{localStorage.setItem(SPELL_KEY,spellOn()?'0':'1')}catch(e){}applySpell();notify(spellOn()?'Corrector activado.':'Corrector desactivado.')});
+applySpell();
 function askConfirm(title,msg,okText){return new Promise(res=>{const d=$('confirmDlg');$('cfTitle').textContent=title;$('cfMsg').textContent=msg;$('cfOk').textContent=okText||'Eliminar';let done=false;const fin=v=>{if(done)return;done=true;if(d.close)d.close();else d.removeAttribute('open');$('cfOk').onclick=null;$('cfCancel').onclick=null;d.oncancel=null;res(v)};$('cfOk').onclick=()=>fin(true);$('cfCancel').onclick=()=>fin(false);d.oncancel=e=>{e.preventDefault();fin(false)};if(d.showModal){if(!d.open)d.showModal()}else d.setAttribute('open','');$('cfCancel').focus()})}
 async function removePart(id){
  const e=effective(id),when=e?`${fmtDate(e.date)}${TIME_RE.test(e.hora||'')?' · '+e.hora:''}`:'';

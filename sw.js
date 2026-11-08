@@ -1,7 +1,7 @@
 /* Parte diario - service worker (uso sin conexión)
    Si actualizás index.html en GitHub, cambiá el número de versión de abajo (v1 -> v2)
    para que los celulares descarguen la versión nueva. */
-const CACHE = 'parte-diario-v17';
+const CACHE = 'parte-diario-v18';
 const ARCHIVOS = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
