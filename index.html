@@ -115,8 +115,8 @@ button.mic.icon{width:46px;min-height:42px;padding:0;font-size:1.15rem}
 .fldHead{display:flex;align-items:center;gap:8px;margin-top:10px;margin-bottom:6px}
 .fldHead>label{margin:0;white-space:nowrap}
 .fldHead>#saveStatus{margin-left:auto}
-.fieldGrow{flex:1;display:flex;flex-direction:column;min-height:0}
-.fieldGrow #motivos{flex:1 1 auto;min-height:96px;padding:10px 12px}
+.fieldGrow{flex:0 0 auto;display:flex;flex-direction:column;min-height:0}
+.fieldGrow #motivos{flex:0 0 auto;min-height:150px;padding:10px 12px}
 .dictate-status{min-height:0;margin-top:4px}
 .dictate-status:empty{display:none}
 details.msg{margin-top:8px}details.msg summary{padding:4px 0}
@@ -124,6 +124,15 @@ details.msg{margin-top:8px}details.msg summary{padding:4px 0}
 .rowA button{min-height:46px;padding:10px}
 .rowB button{min-height:42px;padding:8px 14px}
 #viewBody{margin-top:6px}.vline{margin-top:6px}
+.partHead{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-top:2px}
+#partHeading{flex:1;min-width:0;font-size:1.1rem;margin-top:6px}
+#closeBtn,#closeHistoryBtn{flex:none;width:40px;min-height:40px;padding:0;font-size:1.1rem;border-radius:50%}
+#closeBtn.hidden{display:none!important}
+main{padding-top:14px}
+.dayGroup{margin-top:18px}
+.dayHead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:0 4px 6px;border-bottom:2px solid var(--primary)}
+.dayHead strong{font-size:1.02rem}
+.dayGroup .point{margin-top:8px}
 </style>
 </head>
 <body>
@@ -136,15 +145,15 @@ details.msg{margin-top:8px}details.msg summary{padding:4px 0}
 <main>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="card" id="partCard">
-<div class="partHead"><span class="muted tag hidden" id="partTag"></span><h2 id="partHeading">PARTE DE INCIDENCIAS G.U.M</h2></div>
+<div class="partHead"><span class="muted tag hidden" id="partTag"></span><h2 id="partHeading">PARTE DE INCIDENCIAS G.U.M</h2><button type="button" class="secondary hidden" id="closeBtn" aria-label="Cerrar incidencia" title="Cerrar">✕</button></div>
 <div id="editArea">
 <div class="turno"><b>Turno:</b><input type="text" id="turnoDesde" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Turno: desde (formato 24 horas)"><span>a</span><input type="text" id="turnoHasta" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Turno: hasta (formato 24 horas)"></div>
 <div class="fechaLine"><b>Fecha:</b> <span id="fechaTxt"></span></div>
-<div class="fld"><label for="hora"><span class="b">●</span> Hora:</label><input type="text" id="hora" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Hora del hecho (formato 24 horas)"><button type="button" class="secondary" id="nowBtn">🕒 Ahora</button></div>
-<div class="fld"><label for="lugar"><span class="b">●</span> Lugar:</label><input type="text" id="lugar" autocomplete="off" autocapitalize="sentences" placeholder="¿Dónde ocurrió?"><button type="button" class="secondary mic icon" data-target="lugar" aria-pressed="false" aria-label="Dictar lugar" title="Dictar">🎤</button></div>
+<div class="fld"><label for="hora"><span class="b">●</span> Hora:</label><input type="text" id="hora" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="00:00" aria-label="Hora del hecho (formato 24 horas)"></div>
+<div class="fld"><label for="lugar"><span class="b">●</span> Lugar:</label><input type="text" id="lugar" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="sentences" placeholder="¿Dónde ocurrió?"><button type="button" class="secondary mic icon" data-target="lugar" aria-pressed="false" aria-label="Dictar lugar" title="Dictar">🎤</button></div>
 <div class="muted dictate-status" id="status-lugar" aria-live="polite"></div>
 <div class="fieldGrow"><div class="fldHead"><label for="motivos"><span class="b">●</span> MOTIVOS:</label><span class="muted" id="saveStatus" aria-live="polite"></span><button type="button" class="secondary mic icon" data-target="motivos" aria-pressed="false" aria-label="Dictar motivos" title="Dictar">🎤</button></div>
-<textarea id="motivos" rows="3" placeholder="Describí el motivo o lo ocurrido..." autocapitalize="sentences"></textarea>
+<textarea id="motivos" rows="3" placeholder="Describí el motivo o lo ocurrido..." autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="sentences"></textarea>
 <div class="muted dictate-status" id="status-motivos" aria-live="polite"></div></div>
 </div>
 <div id="viewArea" class="hidden"><div id="viewBody"></div></div>
@@ -154,7 +163,7 @@ details.msg{margin-top:8px}details.msg summary{padding:4px 0}
 <div class="rowB" id="rowB"><button class="secondary hidden" id="cancelBtn">Cancelar</button><button class="secondary hidden" id="editBtn">✎ Editar</button><button class="secondary" id="deletePartBtn">🗑 Eliminar</button></div>
 </div>
 </section>
-<section class="card hidden" id="historyCard"><div class="row"><h2>Historial de partes</h2><button class="secondary" id="closeHistoryBtn">Cerrar</button></div><p class="muted" style="margin:10px 0 0">Tocá un parte para abrirlo.</p><div id="historyList"></div></section>
+<section class="card hidden" id="historyCard"><div class="row"><h2>Historial de partes</h2><button type="button" class="secondary" id="closeHistoryBtn" aria-label="Cerrar historial" title="Cerrar">✕</button></div><p class="muted" style="margin:10px 0 0">Tocá un parte para abrirlo.</p><div id="historyList"></div></section>
 </main>
 <dialog id="confirmDlg" aria-labelledby="cfTitle"><h2 id="cfTitle"></h2><p id="cfMsg"></p><div class="actions" style="justify-content:flex-end"><button class="secondary" id="cfCancel">Cancelar</button><button class="danger" id="cfOk">Eliminar</button></div></dialog>
 
@@ -217,14 +226,14 @@ function loadDrafts(){
    const v=x[k];if(!v||typeof v!=='object')return;
    const motivos=typeof v.motivos==='string'?v.motivos:(typeof v.text==='string'?v.text:''),lugar=String(v.lugar||'');
    if(!motivos.trim()&&!lugar.trim())return;
-   out[k]={date:DATE_RE.test(v.date||'')?v.date:(DATE_RE.test(k.slice(0,10))?k.slice(0,10):today()),created:Number(v.created)||Date.now(),desde:String(v.desde||''),hasta:String(v.hasta||''),hora:TIME_RE.test(v.hora||'')?v.hora:'',lugar,motivos};
+   out[k]={date:DATE_RE.test(v.date||'')?v.date:(DATE_RE.test(k.slice(0,10))?k.slice(0,10):today()),created:Number(v.created)||Date.now(),desde:String(v.desde||''),hasta:String(v.hasta||''),hora:TIME_RE.test(v.hora||'')?v.hora:'',lugar,motivos,ht:!!v.ht};
   });
   return out;
  }catch(e){return {}}
 }
 function loadTurno(){try{return validTurno(JSON.parse(localStorage.getItem(TURNO_KEY)))||{desde:'12:00',hasta:'18:00'}}catch(e){return {desde:'12:00',hasta:'18:00'}}}
 let db=loadDB(),drafts=loadDrafts(),lastTurno=loadTurno();
-let cur={id:newId(),date:today(),created:Date.now()},mode='edit',savedSig='',horaTouched=false;
+let cur={id:newId(),date:today(),created:Date.now()},mode='edit',savedSig='',horaTouched=false,fromHist=false,histY=0;
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(db));return true}catch(e){notify('No se pudieron guardar los datos en este navegador. Exportá un respaldo y liberá espacio.');return false}}
 function persistDrafts(){try{localStorage.setItem(DKEY,JSON.stringify(drafts))}catch(e){}}
 function saveLastTurno(){try{localStorage.setItem(TURNO_KEY,JSON.stringify(lastTurno))}catch(e){}}
@@ -262,12 +271,20 @@ const current=()=>mode==='edit'?live():(db[cur.id]?fromSaved(db[cur.id]):live())
 /* ===== Edición, borrador automático y guardado ===== */
 function setSaveStatus(s){$('saveStatus').textContent=s}
 const sig=()=>[$('turnoDesde').value,$('turnoHasta').value,$('hora').value,$('lugar').value,$('motivos').value].join('|');
+const mBase=()=>Math.max(110,Math.min(190,Math.round(window.innerHeight*0.22)));
 function autoGrow(){
  const ta=$('motivos');if($('editArea').classList.contains('hidden'))return;
- /* La caja ocupa el espacio libre de la pantalla y solo crece más si el texto lo necesita */
- ta.style.flex='none';ta.style.height='auto';ta.style.minHeight='0';
- const h=Math.max(ta.scrollHeight+2,96);
- ta.style.minHeight=h+'px';ta.style.height='';ta.style.flex='';
+ /* Altura base: aprox. una quinta parte de la pantalla; solo crece si el texto lo necesita */
+ ta.style.height='auto';ta.style.minHeight='0';
+ const h=Math.max(ta.scrollHeight+2,mBase());
+ ta.style.minHeight=h+'px';ta.style.height='';
+}
+window.addEventListener('resize',autoGrow);
+/* Al Guardar o Copiar, la hora pasa a ser la de ese momento (salvo que la hayas fijado a mano o sea un parte ya guardado) */
+function autoHora(){
+ if(mode!=='edit'||db[cur.id]||horaTouched||!hasContent(live()))return;
+ const h=nowHM();
+ if($('hora').value!==h){$('hora').value=h;$('hora').dataset.ok=h;updatePreview()}
 }
 function updatePreview(){$('msgPreview').innerHTML=previewHTML(current())}
 function sameAsSaved(v){
@@ -279,7 +296,7 @@ function saveDraft(){
  if(mode!=='edit'||sig()===savedSig)return true;
  const v=live();
  if(sameAsSaved(v)||!hasContent(v)){delete drafts[cur.id];setSaveStatus('')}
- else{drafts[cur.id]={date:cur.date,created:cur.created,desde:v.desde,hasta:v.hasta,hora:v.hora,lugar:v.lugar,motivos:v.motivos};setSaveStatus('Borrador ✓')}
+ else{drafts[cur.id]={date:cur.date,created:cur.created,desde:v.desde,hasta:v.hasta,hora:v.hora,lugar:v.lugar,motivos:v.motivos,ht:horaTouched};setSaveStatus('Borrador ✓')}
  persistDrafts();savedSig=sig();return true;
 }
 function loadFields(v){
@@ -297,6 +314,7 @@ function applyMode(){
  $('editBtn').classList.toggle('hidden',edit);
  $('deletePartBtn').classList.toggle('hidden',!has);
  $('rowB').classList.toggle('hidden',!has);
+ $('closeBtn').classList.toggle('hidden',!(has||fromHist));
  $('partTag').textContent=edit?(has?'Editando parte guardado':'Nuevo parte'):'Parte guardado';
  $('fechaTxt').textContent=fmtDate(cur.date);
  if(edit)autoGrow();
@@ -309,18 +327,18 @@ function applyMode(){
 }
 /* Formulario nuevo: fecha de hoy y hora actual */
 function resetForm(){
- cur={id:newId(),date:today(),created:Date.now()};
+ fromHist=false;cur={id:newId(),date:today(),created:Date.now()};
  loadFields({hora:nowHM()});horaTouched=false;mode='edit';
  savedSig=sig();setSaveStatus('');
 }
-function newForm(){stopDictation();saveDraft();resetForm();showMain(true);applyMode();$('lugar').focus()}
-function openPart(id){
- stopDictation();saveDraft();
+function newForm(focus){stopDictation();saveDraft();resetForm();showMain(true);applyMode();if(focus)$('lugar').focus()}
+function openPart(id,h){
+ stopDictation();saveDraft();if(h!==undefined)fromHist=h;
  const e=effective(id);if(!e)return;
  cur={id,date:e.date,created:e.created||Date.now()};
  mode=(drafts[id]||!db[id])?'edit':'view';
  loadFields(mode==='edit'?e:fromSaved(db[id]));
- horaTouched=true;savedSig=sig();setSaveStatus(drafts[id]?'Borrador ✓':'');
+ horaTouched=!!db[id]||!!e.ht;savedSig=sig();setSaveStatus(drafts[id]?'Borrador ✓':'');
  showMain(true);applyMode();
 }
 function startEdit(){
@@ -330,7 +348,7 @@ function startEdit(){
 }
 function cancelEdit(){stopDictation();delete drafts[cur.id];persistDrafts();openPart(cur.id);notify('Cambios descartados.')}
 function commit(){
- stopDictation();
+ stopDictation();autoHora();
  const v=live(),t=validTurno({desde:v.desde,hasta:v.hasta});
  if(!hasContent(v)){notify('Completá el lugar y los motivos antes de guardar.');$('lugar').focus();return}
  if(!t){notify('Completá el turno: hora de inicio y de fin.');return}
@@ -361,7 +379,6 @@ function fixHora(v){
   updatePreview();saveDraft();
  });
 });
-$('nowBtn').addEventListener('click',()=>{$('hora').value=nowHM();$('hora').dataset.ok=$('hora').value;horaTouched=false;updatePreview();saveDraft()});
 setInterval(()=>{if(mode==='edit'){saveDraft();autoGrow();updatePreview()}},1500);
 window.addEventListener('pagehide',saveDraft);
 document.addEventListener('visibilitychange',()=>{
@@ -383,14 +400,14 @@ async function removePart(id){
 async function deleteCurrent(){
  stopDictation();
  if(!db[cur.id]){notify('Este parte todavía no está guardado.');return}
- if(await removePart(cur.id)){resetForm();applyMode();notify('Parte eliminado.')}
+ if(await removePart(cur.id)){const back=fromHist;resetForm();if(back){history(true)}else applyMode();notify('Parte eliminado.')}
 }
 async function copyText(t){
  try{await navigator.clipboard.writeText(t);return true}catch(e){}
  try{const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(e){return false}
 }
 async function copyCurrent(){
- stopDictation();saveDraft();
+ stopDictation();autoHora();saveDraft();
  const v=current();
  if(!hasContent(v)){notify('Completá el lugar y los motivos antes de copiar.');return}
  if(await copyText(buildMessage(v)))notify('Texto copiado. Pegalo en WhatsApp.');else notify('No se pudo copiar. Abrí "Ver cómo queda para WhatsApp" y copialo a mano.');
@@ -418,33 +435,49 @@ function importDB(file){
 /* ===== Historial ===== */
 function showMain(on){$('partCard').classList.toggle('hidden',!on);$('historyCard').classList.toggle('hidden',on);window.scrollTo(0,0)}
 const TRASH='<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
-function historyIds(){
- const key=id=>{const e=effective(id);return e.date+'|'+String(e.created||0).padStart(15,'0')};
- return [...new Set([...Object.keys(db),...Object.keys(drafts)])].filter(id=>{const e=effective(id);return e&&hasContent(e)}).sort((a,b)=>key(b).localeCompare(key(a)));
+const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+function dayLabel(date){
+ const [y,m,d]=date.split('-').map(Number);
+ let w='';try{w=new Date(y,m-1,d).toLocaleDateString('es-AR',{weekday:'long'})}catch(e){}
+ return (w?cap(w)+' ':'')+fmtDate(date);
+}
+function historyGroups(){
+ const ids=[...new Set([...Object.keys(db),...Object.keys(drafts)])].filter(id=>{const e=effective(id);return e&&hasContent(e)});
+ const by={};
+ ids.forEach(id=>{const e=effective(id);(by[e.date]=by[e.date]||[]).push(id)});
+ const ord=id=>{const e=effective(id);return (TIME_RE.test(e.hora||'')?e.hora:'00:00')+'|'+String(e.created||0).padStart(15,'0')};
+ return Object.keys(by).sort((a,b)=>b.localeCompare(a)).map(d=>({date:d,ids:by[d].sort((x,y)=>ord(y).localeCompare(ord(x)))}));
 }
 function renderHistoryList(){
- const ids=historyIds(),list=$('historyList');
+ const groups=historyGroups(),list=$('historyList');
  list.innerHTML='';
- if(!ids.length)list.innerHTML='<p class="empty">Todavía no hay partes guardados.</p>';
- ids.forEach(id=>{
-  const e=effective(id);
-  const prev=[oneLine(e.lugar),oneLine((String(e.motivos).split('\n').find(l=>l.trim())||''))].filter(Boolean).join(' — ').slice(0,100);
-  const row=document.createElement('div');row.className='point hrow';row.dataset.open=id;
-  row.innerHTML=`<div class="row"><div class="hmain"><strong>${fmtDate(e.date)}${TIME_RE.test(e.hora||'')?' · '+e.hora:''}</strong>${drafts[id]?'<span class="badge">Borrador</span>':''}<div class="muted hprev">${safe(prev)}</div></div><div class="actions"><button class="secondary" data-copy="${safe(id)}">Copiar</button><button class="secondary iconbtn del" data-del="${safe(id)}" aria-label="Eliminar parte" title="Eliminar">${TRASH}</button></div></div>`;
-  list.appendChild(row);
+ if(!groups.length)list.innerHTML='<p class="empty">Todavía no hay partes guardados.</p>';
+ groups.forEach(g=>{
+  const sec=document.createElement('section');sec.className='dayGroup';
+  sec.innerHTML=`<div class="dayHead"><strong>${safe(dayLabel(g.date))}</strong><span class="muted">${g.ids.length} ${g.ids.length===1?'incidencia':'incidencias'}</span></div>`;
+  g.ids.forEach(id=>{
+   const e=effective(id);
+   const prev=[oneLine(e.lugar),oneLine((String(e.motivos).split('\n').find(l=>l.trim())||''))].filter(Boolean).join(' — ').slice(0,100);
+   const row=document.createElement('div');row.className='point hrow';row.dataset.open=id;
+   row.innerHTML=`<div class="row"><div class="hmain"><strong>${TIME_RE.test(e.hora||'')?e.hora:'Sin hora'}</strong>${drafts[id]?'<span class="badge">Borrador</span>':''}<div class="muted hprev">${safe(prev)}</div></div><div class="actions"><button class="secondary" data-copy="${safe(id)}">Copiar</button><button class="secondary iconbtn del" data-del="${safe(id)}" aria-label="Eliminar parte" title="Eliminar">${TRASH}</button></div></div>`;
+   sec.appendChild(row);
+  });
+  list.appendChild(sec);
  });
- list.querySelectorAll('[data-open]').forEach(b=>b.onclick=e=>{e.stopPropagation();openPart(b.dataset.open)});
+ list.querySelectorAll('[data-open]').forEach(b=>b.onclick=e=>{e.stopPropagation();histY=window.scrollY;openPart(b.dataset.open,true)});
  list.querySelectorAll('[data-copy]').forEach(b=>b.onclick=async e=>{e.stopPropagation();const ok=await copyText(buildMessage(effective(b.dataset.copy)));notify(ok?'Texto copiado. Pegalo en WhatsApp.':'No se pudo copiar.')});
  list.querySelectorAll('[data-del]').forEach(b=>b.onclick=async e=>{
   e.stopPropagation();const id=b.dataset.del;
   if(await removePart(id)){if(id===cur.id){resetForm();applyMode()}renderHistoryList();notify('Parte eliminado.')}
  });
 }
-function history(){stopDictation();saveDraft();renderHistoryList();showMain(false)}
-$('newPartBtn').onclick=newForm;
+function history(keep){stopDictation();saveDraft();renderHistoryList();showMain(false);if(keep)window.scrollTo(0,histY)}
+/* Cerrar: vuelve al historial si la incidencia se abrió desde ahí; si no, deja un formulario nuevo */
+function closePart(){stopDictation();saveDraft();const back=fromHist;resetForm();if(back)history(true);else applyMode()}
+$('newPartBtn').onclick=()=>newForm(true);$('closeBtn').onclick=closePart;
 $('saveBtn').onclick=commit;$('editBtn').onclick=startEdit;$('cancelBtn').onclick=cancelEdit;$('deletePartBtn').onclick=deleteCurrent;$('copyBtn').onclick=copyCurrent;
 $('exportBtn').onclick=exportDB;$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=e=>{if(e.target.files[0])importDB(e.target.files[0]);e.target.value=''};
-$('historyBtn').onclick=history;$('closeHistoryBtn').onclick=()=>showMain(true);
+$('historyBtn').onclick=history;$('closeHistoryBtn').onclick=()=>newForm(false);
 
 /* ===== Dictado por voz ===== */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
