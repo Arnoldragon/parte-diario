@@ -276,7 +276,7 @@ const current=()=>mode==='edit'?live():(db[cur.id]?fromSaved(db[cur.id]):live())
 
 /* ===== Edición, borrador automático y guardado ===== */
 function setSaveStatus(s){$('saveStatus').textContent=s}
-const sig=()=>[$('turnoDesde').value,$('turnoHasta').value,$('hora').value,$('lugar').value,$('motivos').value].join('|');
+const sig=()=>[$('turnoDesde').value,$('turnoHasta').value,$('hora').value,$('lugar').value,$('motivos').value,horaTouched?1:0].join('|');
 const mBase=()=>Math.max(110,Math.min(190,Math.round(window.innerHeight*0.22)));
 let growVal=null,growH=0;
 function autoGrow(force){
@@ -289,11 +289,12 @@ function autoGrow(force){
  ta.style.minHeight=h+'px';ta.style.height='';
 }
 window.addEventListener('resize',()=>autoGrow(true));
-/* Al Guardar o Copiar, la hora pasa a ser la de ese momento (salvo que la hayas fijado a mano o sea un parte ya guardado) */
+/* La primera vez que Guardás o Copiás un parte nuevo, la hora pasa a ser la de ese momento y queda fija (solo cambia si la editás a mano) */
 function autoHora(){
  if(mode!=='edit'||db[cur.id]||horaTouched||!hasContent(live()))return;
  const h=nowHM();
  if($('hora').value!==h){$('hora').value=h;$('hora').dataset.ok=h;updatePreview()}
+ horaTouched=true; /* queda fija: solo cambia si la editás vos a mano */
 }
 function updatePreview(){$('msgPreview').innerHTML=previewHTML(current())}
 function sameAsSaved(v){
@@ -347,7 +348,7 @@ function openPart(id,h){
  cur={id,date:e.date,created:e.created||Date.now()};
  mode=(drafts[id]||!db[id])?'edit':'view';
  loadFields(mode==='edit'?e:fromSaved(db[id]));
- horaTouched=!!db[id]||!!e.ht;savedSig=sig();setSaveStatus(drafts[id]?'Borrador ✓':'');
+ horaTouched=!!db[id]||!!e.ht||fromHist;savedSig=sig();setSaveStatus(drafts[id]?'Borrador ✓':'');
  showMain(true);applyMode();
 }
 function startEdit(){
